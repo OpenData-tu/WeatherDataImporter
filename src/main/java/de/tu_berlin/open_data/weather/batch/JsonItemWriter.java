@@ -4,6 +4,7 @@ package de.tu_berlin.open_data.weather.batch;
 import de.tu_berlin.open_data.weather.model.Schema;
 import de.tu_berlin.open_data.weather.model.WeatherData;
 import de.tu_berlin.open_data.weather.service.JsonSchemaCreator;
+import de.tu_berlin.open_data.weather.service.KafkaServiceRecordProducer;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +17,8 @@ public class JsonItemWriter implements ItemWriter<Schema> {
 
     @Autowired
     JsonSchemaCreator jsonSchemaCreator;
+    @Autowired
+    KafkaServiceRecordProducer kafkaServiceRecordProducer;
 
     @Override
     public void write(List<? extends Schema> list) throws Exception {
@@ -23,8 +26,8 @@ public class JsonItemWriter implements ItemWriter<Schema> {
 
         for (WeatherData currentWeatherData : (List<WeatherData>)list){
 
-            System.out.println(jsonSchemaCreator.create(currentWeatherData));
-
+            String jsonObject = jsonSchemaCreator.create(currentWeatherData);
+            kafkaServiceRecordProducer.produce(jsonObject);
         }
 
 

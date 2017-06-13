@@ -23,4 +23,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return fieldsArray;
     }
+
+    @Override
+    public float parseToFloat(String number) {
+
+        try {
+          return  Float.parseFloat(number);
+        }catch (NumberFormatException e){
+            return 0;
+        }
+
+    }
+
+    @Override
+    public String toISODateFormat(String date) {
+        return date + "Z";
+    }
 }

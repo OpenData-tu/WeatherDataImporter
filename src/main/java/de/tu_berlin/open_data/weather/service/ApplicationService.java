@@ -5,4 +5,6 @@ package de.tu_berlin.open_data.weather.service;
  */
 public interface ApplicationService {
     String [] getFields(Class<? extends Object> weatherDataClass);
+    float parseToFloat(String number);
+    String toISODateFormat(String date);
 }

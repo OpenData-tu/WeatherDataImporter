@@ -3,6 +3,7 @@ package de.tu_berlin.open_data.weather.service;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.tu_berlin.open_data.weather.model.WeatherData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class JsonSchemaCreatorImpl implements JsonSchemaCreator {
+
+    @Autowired
+    ApplicationService applicationService;
     @Override
     public String create(WeatherData currentWeatherData) {
         JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
@@ -18,14 +22,14 @@ public class JsonSchemaCreatorImpl implements JsonSchemaCreator {
 
         mainObject.put("source_id", "luftdaten_info");
         mainObject.put("device", currentWeatherData.getSensorId());
-        mainObject.put("timestamp", currentWeatherData.getTimestamp());
+        mainObject.put("timestamp", currentWeatherData.getTimestamp().toString());
         //mainObject.put("timestamp_record", "");
 
 
         ObjectNode firstLevelChild = nodeFactory.objectNode();
 
-        firstLevelChild.put("lat", currentWeatherData.getLat());
-        firstLevelChild.put("lon", currentWeatherData.getLon());
+        firstLevelChild.put("lat", applicationService.parseToFloat(currentWeatherData.getLat()));
+        firstLevelChild.put("lon", applicationService.parseToFloat(currentWeatherData.getLon()));
 
         mainObject.set("location", firstLevelChild);
 
@@ -35,27 +39,27 @@ public class JsonSchemaCreatorImpl implements JsonSchemaCreator {
 
         ObjectNode secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", currentWeatherData.getSensorType());
-        secondLevelChild.put("observation_value", currentWeatherData.getPressure());
+        secondLevelChild.put("observation_value", applicationService.parseToFloat(currentWeatherData.getPressure()));
         firstLevelChild.set("pressure", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", currentWeatherData.getSensorType());
-        secondLevelChild.put("observation_value", currentWeatherData.getAltitude());
+        secondLevelChild.put("observation_value", applicationService.parseToFloat(currentWeatherData.getAltitude()));
         firstLevelChild.set("altitude", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", currentWeatherData.getSensorType());
-        secondLevelChild.put("observation_value", currentWeatherData.getPressureSeaLevel());
+        secondLevelChild.put("observation_value", applicationService.parseToFloat(currentWeatherData.getPressureSeaLevel()));
         firstLevelChild.set("pressure_seallevel", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", currentWeatherData.getSensorType());
-        secondLevelChild.put("observation_value", currentWeatherData.getTemperature());
+        secondLevelChild.put("observation_value", applicationService.parseToFloat(currentWeatherData.getTemperature()));
         firstLevelChild.set("temperature", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", currentWeatherData.getSensorType());
-        secondLevelChild.put("observation_value", currentWeatherData.getHumidity());
+        secondLevelChild.put("observation_value", applicationService.parseToFloat(currentWeatherData.getHumidity()));
         firstLevelChild.set("humidity", secondLevelChild);
 
 
@@ -63,7 +67,7 @@ public class JsonSchemaCreatorImpl implements JsonSchemaCreator {
         mainObject.set("sensors", firstLevelChild);
         firstLevelChild = nodeFactory.objectNode();
 
-        firstLevelChild.put("location", currentWeatherData.getLocation());
+        firstLevelChild.put("location", applicationService.parseToFloat(currentWeatherData.getLocation()));
         mainObject.set("extra", firstLevelChild);
 
 
