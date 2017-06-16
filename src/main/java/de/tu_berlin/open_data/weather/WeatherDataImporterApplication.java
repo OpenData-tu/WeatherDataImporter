@@ -1,10 +1,16 @@
 package de.tu_berlin.open_data.weather;
 
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.cloud.task.configuration.EnableTask;
+
+import java.net.InetAddress;
 
 @SpringBootApplication
 @EnableBatchProcessing
