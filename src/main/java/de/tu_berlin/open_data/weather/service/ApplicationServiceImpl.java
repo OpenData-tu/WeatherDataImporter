@@ -1,5 +1,10 @@
 package de.tu_berlin.open_data.weather.service;
 
+import de.tu_berlin.open_data.weather.model.Schema;
+import org.springframework.batch.item.file.LineMapper;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -37,5 +42,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public String toISODateFormat(String date) {
         return date + "Z";
+    }
+
+    @Override
+    public LineMapper createLineMapper(Class<? extends Schema> aClass, Schema userModelInstance) {
+        return new DefaultLineMapper<Schema>() {{
+            setLineTokenizer(new DelimitedLineTokenizer(userModelInstance.getDelimiter()) {{
+                setNames(getFields(aClass));
+            }});
+            setFieldSetMapper(new BeanWrapperFieldSetMapper<Schema>() {{
+                setTargetType(userModelInstance.getClass());
+            }});
+        }};
     }
 }

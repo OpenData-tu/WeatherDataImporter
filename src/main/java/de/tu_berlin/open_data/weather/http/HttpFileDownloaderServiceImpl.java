@@ -21,24 +21,20 @@ public class HttpFileDownloaderServiceImpl implements HttpFileDownloaderService 
     @Override
     public UrlResource[] downloadFromUrl(String url, String sensorType) {
 
-        url = "http://archive.luftdaten.info/2017-06-18/";
+        if (!url.endsWith("/"))
+            url = url + "/";
 
-        // Document document = new Document("http://archive.luftdaten.info/2017-06-18/");
+
         List<UrlResource> urlResourceList = new ArrayList<>();
-
 
         try {
             Document doc = Jsoup.connect(url).get();
             Elements links = doc.getElementsByTag("a");
-            UrlResource[] urlResources = new UrlResource[]{};
-
-
 
             String href;
             for (Element link : links) {
                 if ((href = link.attr("href")).contains(sensorType) && href.endsWith(".csv")) {
 
-                    // System.out.println(url + link.attr("href"));
                     urlResourceList.add(new UrlResource(new URL(url + href)));
                 }
             }
@@ -49,6 +45,5 @@ public class HttpFileDownloaderServiceImpl implements HttpFileDownloaderService 
 
         return urlResourceList.toArray(new UrlResource[]{});
 
-        // System.out.println(document.getAllElements());
     }
 }

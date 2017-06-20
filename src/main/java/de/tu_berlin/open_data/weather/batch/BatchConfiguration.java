@@ -2,7 +2,7 @@ package de.tu_berlin.open_data.weather.batch;
 
 import de.tu_berlin.open_data.weather.http.HttpFileDownloaderService;
 import de.tu_berlin.open_data.weather.model.DHTSensor;
-import de.tu_berlin.open_data.weather.model.SDSSensor;
+import de.tu_berlin.open_data.weather.model.SDSAndPPDSensor;
 import de.tu_berlin.open_data.weather.model.Schema;
 import de.tu_berlin.open_data.weather.model.WeatherData;
 import de.tu_berlin.open_data.weather.service.ApplicationService;
@@ -16,10 +16,8 @@ import org.springframework.batch.core.configuration.support.JobRegistryBeanPostP
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.MultiResourceItemReader;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,8 +33,8 @@ import java.net.MalformedURLException;
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
-//    @Value("${resource.url}")
-    private String resourceUrl = "http://archive.luftdaten.info/2017-06-18/";
+    @Value("${resource.url}")
+    private String resourceUrl;
 
 
     @Autowired
@@ -66,15 +64,7 @@ public class BatchConfiguration {
 
         Schema userModelInstance = new WeatherData();
 
-
-        reader.setLineMapper(new DefaultLineMapper<Schema>() {{
-            setLineTokenizer(new DelimitedLineTokenizer(userModelInstance.getDelimiter()) {{
-                setNames(applicationService.getFields(WeatherData.class));
-            }});
-            setFieldSetMapper(new BeanWrapperFieldSetMapper<Schema>() {{
-                setTargetType(userModelInstance.getClass());
-            }});
-        }});
+        reader.setLineMapper(applicationService.createLineMapper(WeatherData.class, userModelInstance));
 
         multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
@@ -93,15 +83,7 @@ public class BatchConfiguration {
 
         Schema userModelInstance = new DHTSensor();
 
-
-        reader.setLineMapper(new DefaultLineMapper<Schema>() {{
-            setLineTokenizer(new DelimitedLineTokenizer(userModelInstance.getDelimiter()) {{
-                setNames(applicationService.getFields(DHTSensor.class));
-            }});
-            setFieldSetMapper(new BeanWrapperFieldSetMapper<Schema>() {{
-                setTargetType(userModelInstance.getClass());
-            }});
-        }});
+        reader.setLineMapper(applicationService.createLineMapper(DHTSensor.class, userModelInstance));
 
         multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
@@ -118,25 +100,33 @@ public class BatchConfiguration {
 
         reader.setLinesToSkip(1);
 
-        Schema userModelInstance = new SDSSensor();
+        Schema userModelInstance = new SDSAndPPDSensor();
 
-
-        reader.setLineMapper(new DefaultLineMapper<Schema>() {{
-            setLineTokenizer(new DelimitedLineTokenizer(userModelInstance.getDelimiter()) {{
-                setNames(applicationService.getFields(SDSSensor.class));
-            }});
-            setFieldSetMapper(new BeanWrapperFieldSetMapper<Schema>() {{
-                setTargetType(userModelInstance.getClass());
-            }});
-        }});
+        reader.setLineMapper(applicationService.createLineMapper(SDSAndPPDSensor.class, userModelInstance));
 
         multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
     }
 
 
+    @Bean
+    public MultiResourceItemReader readerPPD() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
+        String sensorType = "ppd";
+        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl(resourceUrl, sensorType));
+
+        FlatFileItemReader reader = new FlatFileItemReader<>();
+
+        reader.setLinesToSkip(1);
+
+        Schema userModelInstance = new SDSAndPPDSensor();
 
 
+        reader.setLineMapper(applicationService.createLineMapper(SDSAndPPDSensor.class, userModelInstance));
+
+        multiResourceItemReader.setDelegate(reader);
+        return multiResourceItemReader;
+    }
 
 
     @Bean
@@ -150,8 +140,8 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public SDSSensorItemProcessor sdsSensorItemProcessor(){
-        return new SDSSensorItemProcessor();
+    public SDSAndPPDSensorItemProcessor sdsAndPPDSensorItemProcessor(){
+        return new SDSAndPPDSensorItemProcessor();
     }
 
     @Bean
@@ -165,8 +155,8 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public SDSSensorJsonItemWriter sdsSensorJsonItemWriter(){
-        return new SDSSensorJsonItemWriter();
+    public SDSAndPPDSensorJsonItemWriter sdsAndPPDSensorJsonItemWriter(){
+        return new SDSAndPPDSensorJsonItemWriter();
     }
 
     @Bean
@@ -174,7 +164,7 @@ public class BatchConfiguration {
         return jobBuilderFactory.get("weatherDataJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(step3()).next(step2()).next(step1())
+                .flow(step1()).next(step2()).next(step3()).next(step4())
                 .end()
                 .build();
     }
@@ -205,8 +195,19 @@ public class BatchConfiguration {
         return stepBuilderFactory.get("step3")
                 .<WeatherData, WeatherData>chunk(10)
                 .reader(readerSDS())
-                .processor(sdsSensorItemProcessor())
-                .writer(sdsSensorJsonItemWriter())
+                .processor(sdsAndPPDSensorItemProcessor())
+                .writer(sdsAndPPDSensorJsonItemWriter())
+                .build();
+    }
+
+
+    @Bean
+    public Step step4() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
+        return stepBuilderFactory.get("step4")
+                .<WeatherData, WeatherData>chunk(10)
+                .reader(readerPPD())
+                .processor(sdsAndPPDSensorItemProcessor())
+                .writer(sdsAndPPDSensorJsonItemWriter())
                 .build();
     }
 

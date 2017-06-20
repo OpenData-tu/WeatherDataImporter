@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by ahmadjawid on 6/20/17.
  */
-public class SDSSensorJsonItemWriter implements ItemWriter<String> {
+public class SDSAndPPDSensorJsonItemWriter implements ItemWriter<String> {
 
     @Autowired
     JsonSchemaCreator jsonSchemaCreator;
