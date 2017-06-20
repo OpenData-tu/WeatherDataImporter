@@ -30,7 +30,7 @@ public class KafkaProperties {
      */
     private String keySerializer = "org.apache.kafka.common.serialization.StringSerializer";
     /**
-     * defaults org.apache.kafka.common.serialization.StringSerializer
+     * defaults to org.apache.kafka.common.serialization.StringSerializer
      */
     private String valueSerializer = "org.apache.kafka.common.serialization.StringSerializer";
 
