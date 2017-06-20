@@ -8,5 +8,5 @@ import org.springframework.core.io.UrlResource;
 public interface HttpFileDownloaderService {
 
 
-    UrlResource[] downloadFromUrl(String url);
+    UrlResource[] downloadFromUrl(String url, String sensorType);
 }

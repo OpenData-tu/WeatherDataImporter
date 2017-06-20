@@ -15,8 +15,6 @@ public class KafkaServiceRecordProducerImpl implements KafkaServiceRecordProduce
     @Autowired
     Producer producer;
 
-    @Autowired
-    HttpFileDownloaderService httpFileDownloaderService;
 
     @Override
     public void produce(String jsonObject) {

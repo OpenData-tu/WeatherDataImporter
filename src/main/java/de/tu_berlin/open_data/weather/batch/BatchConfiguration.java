@@ -1,6 +1,7 @@
 package de.tu_berlin.open_data.weather.batch;
 
 import de.tu_berlin.open_data.weather.http.HttpFileDownloaderService;
+import de.tu_berlin.open_data.weather.model.DHTSensor;
 import de.tu_berlin.open_data.weather.model.Schema;
 import de.tu_berlin.open_data.weather.model.WeatherData;
 import de.tu_berlin.open_data.weather.service.ApplicationService;
@@ -55,25 +56,10 @@ public class BatchConfiguration {
     @Bean
     public MultiResourceItemReader readerBME() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
-        // readerBME.setResource(new ClassPathResource("new_data.csv"));
-//        URL url1 = new URL("http://archive.luftdaten.info/2017-06-18/2017-06-18_bme280_sensor_548.csv");
-//        URL url2 = new URL("http://archive.luftdaten.info/2017-06-18/2017-06-18_bme280_sensor_141.csv");
-//
-//        UrlResource[] urlResource = {};
-//
-//        List<UrlResource> resources = new ArrayList<>();
-//        resources.add(new UrlResource(url1));
-//        resources.add(new UrlResource(url2));
-        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl("http://archive.luftdaten.info/2017-06-18/"));
-
-//        urlResource = resources.toArray(urlResource);
-//
-//        System.out.println(urlResource.length);
+        String sensorType = "bme";
+        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl("http://archive.luftdaten.info/2017-06-18/", sensorType));
 
         FlatFileItemReader reader = new FlatFileItemReader<>();
-
-
-        //readerBME.setResource(new UrlResource(url));
 
         reader.setLinesToSkip(1);
 
@@ -93,9 +79,46 @@ public class BatchConfiguration {
         return multiResourceItemReader;
     }
 
+
+    @Bean
+    public MultiResourceItemReader readerDHT() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
+        String sensorType = "dht";
+        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl("http://archive.luftdaten.info/2017-06-18/", sensorType));
+
+        FlatFileItemReader reader = new FlatFileItemReader<>();
+
+        reader.setLinesToSkip(1);
+
+        Schema userModelInstance = new DHTSensor();
+
+
+        reader.setLineMapper(new DefaultLineMapper<Schema>() {{
+            setLineTokenizer(new DelimitedLineTokenizer(userModelInstance.getDelimiter()) {{
+                setNames(applicationService.getFields(DHTSensor.class));
+            }});
+            setFieldSetMapper(new BeanWrapperFieldSetMapper<Schema>() {{
+                setTargetType(userModelInstance.getClass());
+            }});
+        }});
+
+        multiResourceItemReader.setDelegate(reader);
+        return multiResourceItemReader;
+    }
+
+
+
+
+
+
     @Bean
     public WeatherDataItemProcessor processor() {
         return new WeatherDataItemProcessor();
+    }
+
+    @Bean
+    public DHTSensorItemProcessor dhtSensorItemProcessor(){
+        return new DHTSensorItemProcessor();
     }
 
     @Bean
@@ -104,11 +127,16 @@ public class BatchConfiguration {
     }
 
     @Bean
+    public DHTSensorJsonItemWriter dhtSensorJsonItemWriter(){
+        return new DHTSensorJsonItemWriter();
+    }
+
+    @Bean
     public Job weatherDataJob(JobCompletionNotificationListener listener) throws NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException, InvocationTargetException, MalformedURLException {
         return jobBuilderFactory.get("weatherDataJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(step1())
+                .flow(step1()).next(step2())
                 .end()
                 .build();
     }
@@ -128,9 +156,9 @@ public class BatchConfiguration {
     public Step step2() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step2")
                 .<WeatherData, WeatherData>chunk(10)
-                .reader(readerBME())
-                .processor(processor())
-                .writer(writer())
+                .reader(readerDHT())
+                .processor(dhtSensorItemProcessor())
+                .writer(dhtSensorJsonItemWriter())
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package de.tu_berlin.open_data.weather.service;
 
+import de.tu_berlin.open_data.weather.model.DHTSensor;
 import de.tu_berlin.open_data.weather.model.WeatherData;
 
 /**
@@ -8,4 +9,6 @@ import de.tu_berlin.open_data.weather.model.WeatherData;
 public interface JsonSchemaCreator {
 
      String create(WeatherData schemaList);
+
+    String createForDHTSensor(DHTSensor dhtSensorItem);
 }
