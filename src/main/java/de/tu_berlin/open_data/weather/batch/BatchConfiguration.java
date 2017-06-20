@@ -18,19 +18,12 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -60,9 +53,9 @@ public class BatchConfiguration {
     private HttpFileDownloaderService httpFileDownloaderService;
 
     @Bean
-    public MultiResourceItemReader reader() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public MultiResourceItemReader readerBME() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
-        // reader.setResource(new ClassPathResource("new_data.csv"));
+        // readerBME.setResource(new ClassPathResource("new_data.csv"));
 //        URL url1 = new URL("http://archive.luftdaten.info/2017-06-18/2017-06-18_bme280_sensor_548.csv");
 //        URL url2 = new URL("http://archive.luftdaten.info/2017-06-18/2017-06-18_bme280_sensor_141.csv");
 //
@@ -80,7 +73,7 @@ public class BatchConfiguration {
         FlatFileItemReader reader = new FlatFileItemReader<>();
 
 
-        //reader.setResource(new UrlResource(url));
+        //readerBME.setResource(new UrlResource(url));
 
         reader.setLinesToSkip(1);
 
@@ -124,7 +117,18 @@ public class BatchConfiguration {
     public Step step1() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step1")
                 .<WeatherData, WeatherData>chunk(10)
-                .reader(reader())
+                .reader(readerBME())
+                .processor(processor())
+                .writer(writer())
+                .build();
+    }
+
+
+    @Bean
+    public Step step2() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
+        return stepBuilderFactory.get("step2")
+                .<WeatherData, WeatherData>chunk(10)
+                .reader(readerBME())
                 .processor(processor())
                 .writer(writer())
                 .build();

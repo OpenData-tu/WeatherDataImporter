@@ -23,7 +23,7 @@ public class KafkaServiceRecordProducerImpl implements KafkaServiceRecordProduce
 
         System.out.println(jsonObject);
 
-     // producer.send(new ProducerRecord("weatherData", jsonObject));
+    producer.send(new ProducerRecord("weatherData", jsonObject));
         // producer.close();
 
     }

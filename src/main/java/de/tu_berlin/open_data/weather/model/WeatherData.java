@@ -18,11 +18,6 @@ public class WeatherData extends Schema {
     private String temperature;
     private String humidity;
 
-    @Override
-    public String[] getClassVariableNames() {
-        return new String[]{"sensorId", "sensorType", "location", "lat", "lon", "timestamp", "pressure", "altitude", "pressureSeaLevel", "temperature", "humidity"};
-    }
-
 
     public String getSensorId() {
         return sensorId;
@@ -119,13 +114,4 @@ public class WeatherData extends Schema {
         return ";";
     }
 
-    @Override
-    public void process() {
-
-    }
-
-    @Override
-    public void preProcess() {
-
-    }
 }
