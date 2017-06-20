@@ -1,6 +1,5 @@
 package de.tu_berlin.open_data.weather.service;
 
-import de.tu_berlin.open_data.weather.model.WeatherData;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -28,8 +27,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     public float parseToFloat(String number) {
 
         try {
-          return  Float.parseFloat(number);
-        }catch (NumberFormatException e){
+            return Float.parseFloat(number);
+        } catch (NumberFormatException e) {
             return 0;
         }
 

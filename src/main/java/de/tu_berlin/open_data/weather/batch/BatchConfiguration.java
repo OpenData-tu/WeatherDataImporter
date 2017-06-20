@@ -2,6 +2,7 @@ package de.tu_berlin.open_data.weather.batch;
 
 import de.tu_berlin.open_data.weather.http.HttpFileDownloaderService;
 import de.tu_berlin.open_data.weather.model.DHTSensor;
+import de.tu_berlin.open_data.weather.model.SDSSensor;
 import de.tu_berlin.open_data.weather.model.Schema;
 import de.tu_berlin.open_data.weather.model.WeatherData;
 import de.tu_berlin.open_data.weather.service.ApplicationService;
@@ -35,7 +36,7 @@ import java.net.MalformedURLException;
 @EnableBatchProcessing
 public class BatchConfiguration {
 //    @Value("${resource.url}")
-//    private String resourceUrl;
+    private String resourceUrl = "http://archive.luftdaten.info/2017-06-18/";
 
 
     @Autowired
@@ -57,7 +58,7 @@ public class BatchConfiguration {
     public MultiResourceItemReader readerBME() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
         String sensorType = "bme";
-        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl("http://archive.luftdaten.info/2017-06-18/", sensorType));
+        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl(resourceUrl, sensorType));
 
         FlatFileItemReader reader = new FlatFileItemReader<>();
 
@@ -84,7 +85,7 @@ public class BatchConfiguration {
     public MultiResourceItemReader readerDHT() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
         String sensorType = "dht";
-        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl("http://archive.luftdaten.info/2017-06-18/", sensorType));
+        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl(resourceUrl, sensorType));
 
         FlatFileItemReader reader = new FlatFileItemReader<>();
 
@@ -96,6 +97,33 @@ public class BatchConfiguration {
         reader.setLineMapper(new DefaultLineMapper<Schema>() {{
             setLineTokenizer(new DelimitedLineTokenizer(userModelInstance.getDelimiter()) {{
                 setNames(applicationService.getFields(DHTSensor.class));
+            }});
+            setFieldSetMapper(new BeanWrapperFieldSetMapper<Schema>() {{
+                setTargetType(userModelInstance.getClass());
+            }});
+        }});
+
+        multiResourceItemReader.setDelegate(reader);
+        return multiResourceItemReader;
+    }
+
+
+    @Bean
+    public MultiResourceItemReader readerSDS() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
+        String sensorType = "sds";
+        multiResourceItemReader.setResources(httpFileDownloaderService.downloadFromUrl(resourceUrl, sensorType));
+
+        FlatFileItemReader reader = new FlatFileItemReader<>();
+
+        reader.setLinesToSkip(1);
+
+        Schema userModelInstance = new SDSSensor();
+
+
+        reader.setLineMapper(new DefaultLineMapper<Schema>() {{
+            setLineTokenizer(new DelimitedLineTokenizer(userModelInstance.getDelimiter()) {{
+                setNames(applicationService.getFields(SDSSensor.class));
             }});
             setFieldSetMapper(new BeanWrapperFieldSetMapper<Schema>() {{
                 setTargetType(userModelInstance.getClass());
@@ -122,6 +150,11 @@ public class BatchConfiguration {
     }
 
     @Bean
+    public SDSSensorItemProcessor sdsSensorItemProcessor(){
+        return new SDSSensorItemProcessor();
+    }
+
+    @Bean
     public JsonItemWriter writer() {
         return new JsonItemWriter();
     }
@@ -132,11 +165,16 @@ public class BatchConfiguration {
     }
 
     @Bean
+    public SDSSensorJsonItemWriter sdsSensorJsonItemWriter(){
+        return new SDSSensorJsonItemWriter();
+    }
+
+    @Bean
     public Job weatherDataJob(JobCompletionNotificationListener listener) throws NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException, InvocationTargetException, MalformedURLException {
         return jobBuilderFactory.get("weatherDataJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(step1()).next(step2())
+                .flow(step3()).next(step2()).next(step1())
                 .end()
                 .build();
     }
@@ -159,6 +197,16 @@ public class BatchConfiguration {
                 .reader(readerDHT())
                 .processor(dhtSensorItemProcessor())
                 .writer(dhtSensorJsonItemWriter())
+                .build();
+    }
+
+    @Bean
+    public Step step3() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
+        return stepBuilderFactory.get("step3")
+                .<WeatherData, WeatherData>chunk(10)
+                .reader(readerSDS())
+                .processor(sdsSensorItemProcessor())
+                .writer(sdsSensorJsonItemWriter())
                 .build();
     }
 
