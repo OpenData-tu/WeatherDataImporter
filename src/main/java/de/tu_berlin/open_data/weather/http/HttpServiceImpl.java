@@ -17,9 +17,9 @@ import java.util.List;
  */
 
 @Service
-public class HttpFileDownloaderServiceImpl implements HttpFileDownloaderService {
+public class HttpServiceImpl implements HttpService {
     @Override
-    public UrlResource[] downloadFromUrl(String url, String sensorType) {
+    public UrlResource[] getUrlResources(String url, String sensorType) {
 
         if (!url.endsWith("/"))
             url = url + "/";

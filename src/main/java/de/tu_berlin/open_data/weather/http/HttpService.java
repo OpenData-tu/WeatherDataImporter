@@ -5,8 +5,8 @@ import org.springframework.core.io.UrlResource;
 /**
  * Created by ahmadjawid on 6/20/17.
  */
-public interface HttpFileDownloaderService {
+public interface HttpService {
 
 
-    UrlResource[] downloadFromUrl(String url, String sensorType);
+    UrlResource[] getUrlResources(String url, String sensorType);
 }

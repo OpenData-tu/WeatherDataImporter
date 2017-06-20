@@ -1,6 +1,5 @@
 package de.tu_berlin.open_data.weather.batch;
 
-import de.tu_berlin.open_data.weather.service.JsonSchemaCreator;
 import de.tu_berlin.open_data.weather.service.KafkaServiceRecordProducer;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,7 @@ import java.util.List;
  */
 public class SDSAndPPDSensorJsonItemWriter implements ItemWriter<String> {
 
-    @Autowired
-    JsonSchemaCreator jsonSchemaCreator;
+
     @Autowired
     KafkaServiceRecordProducer kafkaServiceRecordProducer;
 

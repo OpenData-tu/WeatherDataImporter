@@ -1,37 +1,37 @@
 package de.tu_berlin.open_data.weather.batch;
 
-import de.tu_berlin.open_data.weather.model.WeatherData;
+import de.tu_berlin.open_data.weather.model.BMESensor;
 import de.tu_berlin.open_data.weather.service.ApplicationService;
 import de.tu_berlin.open_data.weather.service.JsonSchemaCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.InputMismatchException;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * Created by ahmadjawid on 5/21/17.
  */
 
-public class WeatherDataItemProcessor implements ItemProcessor<WeatherData, String> {
+public class BMESensorItemProcessor implements ItemProcessor<BMESensor, String> {
 
-    private static final Logger log = LoggerFactory.getLogger(WeatherDataItemProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(BMESensorItemProcessor.class);
 
     @Autowired
     private ApplicationService applicationService;
 
     @Autowired
+    @Qualifier("BMESensorJsonSchemaCreator")
     private JsonSchemaCreator jsonSchemaCreator;
 
     @Override
-    public String process(WeatherData item) throws Exception {
+    public String process(BMESensor item) throws Exception {
         item.setTimestamp(applicationService.toISODateFormat(item.getTimestamp()));
         return jsonSchemaCreator.create(item);
     }
 
 //    @Override
-//    public WeatherData process(final WeatherData weatherData) throws Exception {
+//    public BMESensor process(final BMESensor weatherData) throws Exception {
 //
 //
 //        weatherData.setTimestamp(applicationService.toISODateFormat(weatherData.getTimestamp()));

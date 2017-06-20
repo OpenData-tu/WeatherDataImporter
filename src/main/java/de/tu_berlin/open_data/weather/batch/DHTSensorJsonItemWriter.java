@@ -1,9 +1,5 @@
 package de.tu_berlin.open_data.weather.batch;
 
-import de.tu_berlin.open_data.weather.model.DHTSensor;
-import de.tu_berlin.open_data.weather.model.Schema;
-import de.tu_berlin.open_data.weather.model.WeatherData;
-import de.tu_berlin.open_data.weather.service.JsonSchemaCreator;
 import de.tu_berlin.open_data.weather.service.KafkaServiceRecordProducer;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +11,6 @@ import java.util.List;
  */
 public class DHTSensorJsonItemWriter implements ItemWriter<String> {
 
-    @Autowired
-    JsonSchemaCreator jsonSchemaCreator;
     @Autowired
     KafkaServiceRecordProducer kafkaServiceRecordProducer;
 

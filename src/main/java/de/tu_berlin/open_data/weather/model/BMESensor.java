@@ -4,7 +4,7 @@ package de.tu_berlin.open_data.weather.model;
  * Created by ahmadjawid on 5/21/17.
  */
 
-public class WeatherData extends Schema {
+public class BMESensor extends Schema {
 
     private String sensorId;
     private String sensorType;

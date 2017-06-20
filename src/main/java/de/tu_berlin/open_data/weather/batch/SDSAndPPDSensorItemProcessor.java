@@ -5,6 +5,7 @@ import de.tu_berlin.open_data.weather.service.ApplicationService;
 import de.tu_berlin.open_data.weather.service.JsonSchemaCreator;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * Created by ahmadjawid on 6/20/17.
@@ -15,11 +16,12 @@ public class SDSAndPPDSensorItemProcessor implements ItemProcessor<SDSAndPPDSens
     private ApplicationService applicationService;
 
     @Autowired
+    @Qualifier("SDSAndPPDSensorJsonSchemaCreator")
     private JsonSchemaCreator jsonSchemaCreator;
     @Override
     public String process(SDSAndPPDSensor sdsAndPPDSensorItem) throws Exception {
         sdsAndPPDSensorItem.setTimestamp(applicationService.toISODateFormat(sdsAndPPDSensorItem.getTimestamp()));
 
-        return jsonSchemaCreator.createForSDSSensor(sdsAndPPDSensorItem);
+        return jsonSchemaCreator.create(sdsAndPPDSensorItem);
     }
 }

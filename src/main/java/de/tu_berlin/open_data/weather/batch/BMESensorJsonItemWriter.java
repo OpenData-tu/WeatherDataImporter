@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by ahmadjawid on 5/28/17.
  */
-public class JsonItemWriter implements ItemWriter<String> {
+public class BMESensorJsonItemWriter implements ItemWriter<String> {
 
     @Autowired
     KafkaServiceRecordProducer kafkaServiceRecordProducer;
