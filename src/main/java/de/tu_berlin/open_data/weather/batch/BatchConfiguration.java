@@ -174,7 +174,7 @@ public class BatchConfiguration {
     @Bean
     public Step step1() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step1")
-                .<BMESensor, BMESensor>chunk(10)
+                .<BMESensor, BMESensor>chunk(100000)
                 .reader(readerBME())
                 .processor(processor())
                 .writer(writer())
@@ -185,7 +185,7 @@ public class BatchConfiguration {
     @Bean
     public Step step2() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step2")
-                .<BMESensor, BMESensor>chunk(10)
+                .<BMESensor, BMESensor>chunk(100000)
                 .reader(readerDHT())
                 .processor(dhtSensorItemProcessor())
                 .writer(dhtSensorJsonItemWriter())
@@ -195,7 +195,7 @@ public class BatchConfiguration {
     @Bean
     public Step step3() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step3")
-                .<BMESensor, BMESensor>chunk(10)
+                .<BMESensor, BMESensor>chunk(100000)
                 .reader(readerSDS())
                 .processor(sdsAndPPDSensorItemProcessor())
                 .writer(sdsAndPPDSensorJsonItemWriter())
@@ -206,7 +206,7 @@ public class BatchConfiguration {
     @Bean
     public Step step4() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step4")
-                .<BMESensor, BMESensor>chunk(10)
+                .<BMESensor, BMESensor>chunk(100000)
                 .reader(readerPPD())
                 .processor(sdsAndPPDSensorItemProcessor())
                 .writer(sdsAndPPDSensorJsonItemWriter())
