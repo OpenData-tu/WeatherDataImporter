@@ -7,7 +7,9 @@ import de.tu_berlin.open_data.weather.model.SDSAndPPDSensor;
 import de.tu_berlin.open_data.weather.model.Schema;
 import de.tu_berlin.open_data.weather.service.ApplicationService;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.annotation.BeforeJob;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -19,8 +21,11 @@ import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.task.listener.annotation.BeforeTask;
+import org.springframework.cloud.task.repository.TaskExecution;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
@@ -174,7 +179,7 @@ public class BatchConfiguration {
     @Bean
     public Step step1() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step1")
-                .<BMESensor, BMESensor>chunk(100000)
+                .<BMESensor, BMESensor>chunk(10000)
                 .reader(readerBME())
                 .processor(processor())
                 .writer(writer())
@@ -185,7 +190,7 @@ public class BatchConfiguration {
     @Bean
     public Step step2() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step2")
-                .<BMESensor, BMESensor>chunk(100000)
+                .<BMESensor, BMESensor>chunk(10000)
                 .reader(readerDHT())
                 .processor(dhtSensorItemProcessor())
                 .writer(dhtSensorJsonItemWriter())
@@ -195,7 +200,7 @@ public class BatchConfiguration {
     @Bean
     public Step step3() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step3")
-                .<BMESensor, BMESensor>chunk(100000)
+                .<BMESensor, BMESensor>chunk(10000)
                 .reader(readerSDS())
                 .processor(sdsAndPPDSensorItemProcessor())
                 .writer(sdsAndPPDSensorJsonItemWriter())
@@ -206,7 +211,7 @@ public class BatchConfiguration {
     @Bean
     public Step step4() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
         return stepBuilderFactory.get("step4")
-                .<BMESensor, BMESensor>chunk(100000)
+                .<BMESensor, BMESensor>chunk(10000)
                 .reader(readerPPD())
                 .processor(sdsAndPPDSensorItemProcessor())
                 .writer(sdsAndPPDSensorJsonItemWriter())
