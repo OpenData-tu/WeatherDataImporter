@@ -1,14 +1,12 @@
-FROM maven:3.5-jdk-8
+FROM openjdk:8u131-jre-alpine
 #MAINTAINER open-data-tu
 ADD . /code
 
 WORKDIR /code
 
-RUN mvn clean install
-
 # Dependencies
 ADD target/WeatherDataImporter-0.0.1.jar app.jar
 
-EXPOSE 8080
+ENTRYPOINT ["sh", "app_entrypoint.sh"]
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+EXPOSE 8080

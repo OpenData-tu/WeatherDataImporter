@@ -52,7 +52,7 @@ public class BMESensorJsonSchemaCreator implements JsonSchemaCreator {
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
         secondLevelChild.put("observation_value", applicationService.parseToFloat(bmeSensorItem.getPressureSeaLevel()));
-        firstLevelChild.set("pressure_seallevel", secondLevelChild);
+        firstLevelChild.set("pressure_sealevel", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
