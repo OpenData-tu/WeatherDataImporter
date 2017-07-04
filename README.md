@@ -1,3 +1,4 @@
+
 # Weather Data Importer + Kafka Data Producer
 WeatherDataImporter + Data Producer for Kafka Queue is part of our extensible ETL framework. In this importer, a specific data source is used to extract data from, process them and write them into the Kafka queue.
 
@@ -34,11 +35,19 @@ WeatherDataImporter + Data Producer for Kafka Queue is part of our extensible ET
 
 --------------------------------
 
-## How to RUN
+## Use the docker
+#### Pulling the image:
+```sh
+$ docker pull ahmadjawidjami/luftdaten_info_importer
+```
+#### Running with sample environment variables:
+```sh
+$  docker run -e "RESOURCE_URL=http://archive.luftdaten.info/2016-12-10/" -e "KAFKA_BOOTSTRAP_SERVERS=localhost:9092" -e "KAFKA_BROKER_LIST=localhost:9092" -e "KAFKA_TOPIC=weatherData" luftdaten_info_importer
+```
+#### Mandatory enviroment variables:
+- RESOURCE_URL
+- KAFKA_BOOTSTRAP_SERVERS
+- KAFKA_BROKER_LIST
 
-- Start Zookeeper
-- Start Kafka
-  - create topic: weatherData
-- docker build . 
-
-
+#### Optional environment variable
+- KAFKA_TOPIC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //Default is 'weatherData'
