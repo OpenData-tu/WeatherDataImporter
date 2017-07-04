@@ -42,7 +42,12 @@ $ docker pull ahmadjawidjami/luftdaten_info_importer
 ```
 #### Running with sample environment variables:
 ```sh
-$  docker run -e "RESOURCE_URL=http://archive.luftdaten.info/2016-12-10/" -e "KAFKA_BOOTSTRAP_SERVERS=localhost:9092" -e "KAFKA_BROKER_LIST=localhost:9092" -e "KAFKA_TOPIC=weatherData" luftdaten_info_importer
+$  docker run \
+--env "RESOURCE_URL=http://archive.luftdaten.info/2016-12-10/" \
+--env "KAFKA_BOOTSTRAP_SERVERS=localhost:9092" \
+--env "KAFKA_BROKER_LIST=localhost:9092" \
+--env "KAFKA_TOPIC=weatherData" \
+ahmadjawidjami/luftdaten_info_importer
 ```
 #### Mandatory enviroment variables:
 - RESOURCE_URL
