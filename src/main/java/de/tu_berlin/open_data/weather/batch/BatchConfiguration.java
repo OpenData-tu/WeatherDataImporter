@@ -69,6 +69,8 @@ public class BatchConfiguration {
 
         reader.setLinesToSkip(1);
 
+
+
         Schema userModelInstance = new BMESensor();
 
         reader.setLineMapper(applicationService.createLineMapper(BMESensor.class, userModelInstance));
