@@ -4,12 +4,9 @@ import de.tu_berlin.open_data.weather.http.HttpService;
 import de.tu_berlin.open_data.weather.model.BMESensor;
 import de.tu_berlin.open_data.weather.model.DHTSensor;
 import de.tu_berlin.open_data.weather.model.SDSAndPPDSensor;
-import de.tu_berlin.open_data.weather.model.Schema;
 import de.tu_berlin.open_data.weather.service.ApplicationService;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.annotation.BeforeJob;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -21,11 +18,8 @@ import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.task.listener.annotation.BeforeTask;
-import org.springframework.cloud.task.repository.TaskExecution;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
@@ -70,10 +64,7 @@ public class BatchConfiguration {
         reader.setLinesToSkip(1);
 
 
-
-        Schema userModelInstance = new BMESensor();
-
-        reader.setLineMapper(applicationService.createLineMapper(BMESensor.class, userModelInstance));
+        reader.setLineMapper(applicationService.createLineMapper(BMESensor.class));
 
         multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
@@ -90,9 +81,7 @@ public class BatchConfiguration {
 
         reader.setLinesToSkip(1);
 
-        Schema userModelInstance = new DHTSensor();
-
-        reader.setLineMapper(applicationService.createLineMapper(DHTSensor.class, userModelInstance));
+        reader.setLineMapper(applicationService.createLineMapper(DHTSensor.class));
 
         multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
@@ -109,9 +98,7 @@ public class BatchConfiguration {
 
         reader.setLinesToSkip(1);
 
-        Schema userModelInstance = new SDSAndPPDSensor();
-
-        reader.setLineMapper(applicationService.createLineMapper(SDSAndPPDSensor.class, userModelInstance));
+        reader.setLineMapper(applicationService.createLineMapper(SDSAndPPDSensor.class));
 
         multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
@@ -128,10 +115,8 @@ public class BatchConfiguration {
 
         reader.setLinesToSkip(1);
 
-        Schema userModelInstance = new SDSAndPPDSensor();
 
-
-        reader.setLineMapper(applicationService.createLineMapper(SDSAndPPDSensor.class, userModelInstance));
+        reader.setLineMapper(applicationService.createLineMapper(SDSAndPPDSensor.class));
 
         multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
@@ -139,7 +124,7 @@ public class BatchConfiguration {
 
 
     @Bean
-    public BMESensorItemProcessor processor() {
+    public BMESensorItemProcessor bmeSensorItemProcessor() {
         return new BMESensorItemProcessor();
     }
 
@@ -154,18 +139,8 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public BMESensorJsonItemWriter writer() {
-        return new BMESensorJsonItemWriter();
-    }
-
-    @Bean
-    public DHTSensorJsonItemWriter dhtSensorJsonItemWriter(){
-        return new DHTSensorJsonItemWriter();
-    }
-
-    @Bean
-    public SDSAndPPDSensorJsonItemWriter sdsAndPPDSensorJsonItemWriter(){
-        return new SDSAndPPDSensorJsonItemWriter();
+    public JsonItemWriter writer() {
+        return new JsonItemWriter();
     }
 
     @Bean
@@ -183,7 +158,7 @@ public class BatchConfiguration {
         return stepBuilderFactory.get("step1")
                 .<BMESensor, BMESensor>chunk(10000)
                 .reader(readerBME())
-                .processor(processor())
+                .processor(bmeSensorItemProcessor())
                 .writer(writer())
                 .build();
     }
@@ -195,7 +170,7 @@ public class BatchConfiguration {
                 .<BMESensor, BMESensor>chunk(10000)
                 .reader(readerDHT())
                 .processor(dhtSensorItemProcessor())
-                .writer(dhtSensorJsonItemWriter())
+                .writer(writer())
                 .build();
     }
 
@@ -205,7 +180,7 @@ public class BatchConfiguration {
                 .<BMESensor, BMESensor>chunk(10000)
                 .reader(readerSDS())
                 .processor(sdsAndPPDSensorItemProcessor())
-                .writer(sdsAndPPDSensorJsonItemWriter())
+                .writer(writer())
                 .build();
     }
 
@@ -216,11 +191,11 @@ public class BatchConfiguration {
                 .<BMESensor, BMESensor>chunk(10000)
                 .reader(readerPPD())
                 .processor(sdsAndPPDSensorItemProcessor())
-                .writer(sdsAndPPDSensorJsonItemWriter())
+                .writer(writer())
                 .build();
     }
 
-
+    //The configuration used to manually fetching a particular job from job registry and executing it
     @Bean
     public JobRegistryBeanPostProcessor jobRegistryBeanPostProcess(JobRegistry jobRegistry) {
         JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor = new JobRegistryBeanPostProcessor();

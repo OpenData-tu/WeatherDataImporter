@@ -11,5 +11,5 @@ public interface ApplicationService {
     float parseToFloat(String number);
     String toISODateFormat(String date);
 
-    LineMapper createLineMapper(Class<? extends Schema> aClass, Schema userModelInstance);
+    LineMapper createLineMapper(Class<? extends Schema> aClass) throws IllegalAccessException, InstantiationException;
 }

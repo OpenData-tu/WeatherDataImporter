@@ -45,13 +45,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public LineMapper createLineMapper(Class<? extends Schema> aClass, Schema userModelInstance) {
+    public LineMapper createLineMapper(Class<? extends Schema> aClass) throws IllegalAccessException, InstantiationException {
         return new DefaultLineMapper<Schema>() {{
-            setLineTokenizer(new DelimitedLineTokenizer(userModelInstance.getDelimiter()) {{
+            setLineTokenizer(new DelimitedLineTokenizer(aClass.newInstance().getDelimiter()) {{
                 setNames(getFields(aClass));
             }});
             setFieldSetMapper(new BeanWrapperFieldSetMapper<Schema>() {{
-                setTargetType(userModelInstance.getClass());
+                setTargetType(aClass);
             }});
         }};
     }
