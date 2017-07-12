@@ -1,5 +1,6 @@
 package de.tu_berlin.ise.open_data.config;
 
+import de.tu_berlin.ise.open_data.batch.JobCompletionNotificationListener;
 import de.tu_berlin.ise.open_data.batch.JsonItemWriter;
 import de.tu_berlin.ise.open_data.service.ApplicationServiceImpl;
 import de.tu_berlin.ise.open_data.service.KafkaRecordProducerImpl;
@@ -40,13 +41,18 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    KafkaRecordProducerImpl kafkaRecordProducer(){
+    KafkaRecordProducerImpl kafkaRecordProducer() {
         return new KafkaRecordProducerImpl();
     }
 
     @Bean
-    JsonItemWriter jsonItemWriter(){
+    JsonItemWriter jsonItemWriter() {
         return new JsonItemWriter();
+    }
+
+    @Bean
+    JobCompletionNotificationListener jobCompletionNotificationListener() {
+        return new JobCompletionNotificationListener();
     }
 
 

@@ -1,4 +1,4 @@
-package de.tu_berlin.open_data.weather.batch;
+package de.tu_berlin.ise.open_data.batch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

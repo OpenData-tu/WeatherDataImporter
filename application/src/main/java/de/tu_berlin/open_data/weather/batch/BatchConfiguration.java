@@ -1,5 +1,6 @@
 package de.tu_berlin.open_data.weather.batch;
 
+import de.tu_berlin.ise.open_data.batch.JobCompletionNotificationListener;
 import de.tu_berlin.ise.open_data.batch.JsonItemWriter;
 import de.tu_berlin.ise.open_data.service.ApplicationService;
 import de.tu_berlin.open_data.weather.http.HttpService;
@@ -36,6 +37,8 @@ import java.net.MalformedURLException;
 public class BatchConfiguration {
     @Value("${resource.url}")
     private String resourceUrl;
+
+
 
 
     @Autowired

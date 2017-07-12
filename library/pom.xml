@@ -52,6 +52,11 @@
             <artifactId>kafka-clients</artifactId>
             <version>0.10.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-core</artifactId>
+            <version>3.0.7.RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>
