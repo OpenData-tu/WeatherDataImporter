@@ -1,7 +1,7 @@
 package de.tu_berlin.open_data.weather.batch;
 
+import de.tu_berlin.ise.open_data.service.ApplicationService;
 import de.tu_berlin.open_data.weather.model.BMESensor;
-import de.tu_berlin.open_data.weather.service.ApplicationService;
 import de.tu_berlin.open_data.weather.service.JsonSchemaCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,14 +29,5 @@ public class BMESensorItemProcessor implements ItemProcessor<BMESensor, String> 
         item.setTimestamp(applicationService.toISODateFormat(item.getTimestamp()));
         return jsonSchemaCreator.create(item);
     }
-
-//    @Override
-//    public BMESensor process(final BMESensor weatherData) throws Exception {
-//
-//
-//        weatherData.setTimestamp(applicationService.toISODateFormat(weatherData.getTimestamp()));
-//
-//        return weatherData;
-//    }
 
 }

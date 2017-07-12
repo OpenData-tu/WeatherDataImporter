@@ -8,9 +8,11 @@ import org.springframework.batch.item.file.LineMapper;
  */
 public interface ApplicationService {
 
-    String [] getFields(Class<? extends Object> aClass);
+    String[] getFields(Class<? extends Object> aClass);
+
     Double parseToDouble(String number);
-   // String toISODateFormat(String date);
+
+    String toISODateFormat(String date);
 
     LineMapper createLineMapper(Class<? extends Schema> aClass) throws IllegalAccessException, InstantiationException;
 

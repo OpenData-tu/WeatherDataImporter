@@ -6,6 +6,7 @@ import de.tu_berlin.ise.open_data.model.Schema;
 import de.tu_berlin.open_data.weather.model.SDSAndPPDSensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import de.tu_berlin.ise.open_data.service.ApplicationService;
 
 /**
  * Created by ahmadjawid on 6/20/17.

@@ -1,6 +1,7 @@
 package de.tu_berlin.ise.open_data.service;
 
 import de.tu_berlin.ise.open_data.model.Schema;
+import org.joda.time.DateTime;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -40,6 +41,14 @@ public class ApplicationServiceImpl implements ApplicationService {
             return null;
         }
 
+    }
+
+    @Override
+    public String toISODateFormat(String date) {
+
+        DateTime dateTime = new DateTime(date);
+
+        return dateTime.toDateTimeISO().toString();
     }
 
     @Override
