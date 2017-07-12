@@ -8,7 +8,7 @@ import org.springframework.batch.item.file.LineMapper;
  */
 public interface ApplicationService {
     String [] getFields(Class<? extends Object> weatherDataClass);
-    float parseToFloat(String number);
+    Double parseToDouble(String number);
     String toISODateFormat(String date);
 
     LineMapper createLineMapper(Class<? extends Schema> aClass) throws IllegalAccessException, InstantiationException;

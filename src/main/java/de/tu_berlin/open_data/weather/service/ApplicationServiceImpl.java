@@ -29,18 +29,21 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public float parseToFloat(String number) {
+    public Double parseToDouble(String number) {
 
         try {
-            return Float.parseFloat(number);
+            return Double.parseDouble(number);
         } catch (NumberFormatException e) {
-            return 0;
+            return null;
         }
 
     }
 
     @Override
     public String toISODateFormat(String date) {
+        if (date.contains("+")){
+            return date;
+        }
         return date + "Z";
     }
 

@@ -33,8 +33,8 @@ public class DHTSensorJsonSchemaCreator implements JsonSchemaCreator {
 
         ObjectNode firstLevelChild = nodeFactory.objectNode();
 
-        firstLevelChild.put("lat", applicationService.parseToFloat(dhtSensorItem.getLat()));
-        firstLevelChild.put("lon", applicationService.parseToFloat(dhtSensorItem.getLon()));
+        firstLevelChild.put("lat", applicationService.parseToDouble(dhtSensorItem.getLat()));
+        firstLevelChild.put("lon", applicationService.parseToDouble(dhtSensorItem.getLon()));
 
         mainObject.set("location", firstLevelChild);
 
@@ -44,12 +44,12 @@ public class DHTSensorJsonSchemaCreator implements JsonSchemaCreator {
 
         ObjectNode secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", dhtSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(dhtSensorItem.getTemperature()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(dhtSensorItem.getTemperature()));
         firstLevelChild.set("temperature", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", dhtSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(dhtSensorItem.getHumidity()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(dhtSensorItem.getHumidity()));
         firstLevelChild.set("humidity", secondLevelChild);
 
 
@@ -57,7 +57,7 @@ public class DHTSensorJsonSchemaCreator implements JsonSchemaCreator {
         mainObject.set("sensors", firstLevelChild);
         firstLevelChild = nodeFactory.objectNode();
 
-        firstLevelChild.put("location", applicationService.parseToFloat(dhtSensorItem.getLocation()));
+        firstLevelChild.put("location", applicationService.parseToDouble(dhtSensorItem.getLocation()));
         mainObject.set("extra", firstLevelChild);
 
 

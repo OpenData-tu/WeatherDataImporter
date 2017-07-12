@@ -31,8 +31,8 @@ public class SDSAndPPDSensorJsonSchemaCreator implements JsonSchemaCreator {
 
         ObjectNode firstLevelChild = nodeFactory.objectNode();
 
-        firstLevelChild.put("lat", applicationService.parseToFloat(sdsAndPPDSensorItem.getLat()));
-        firstLevelChild.put("lon", applicationService.parseToFloat(sdsAndPPDSensorItem.getLon()));
+        firstLevelChild.put("lat", applicationService.parseToDouble(sdsAndPPDSensorItem.getLat()));
+        firstLevelChild.put("lon", applicationService.parseToDouble(sdsAndPPDSensorItem.getLon()));
 
         mainObject.set("location", firstLevelChild);
 
@@ -42,38 +42,38 @@ public class SDSAndPPDSensorJsonSchemaCreator implements JsonSchemaCreator {
 
         ObjectNode secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", sdsAndPPDSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(sdsAndPPDSensorItem.getDurP1()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(sdsAndPPDSensorItem.getDurP1()));
         firstLevelChild.set("p1", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", sdsAndPPDSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(sdsAndPPDSensorItem.getDurP1()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(sdsAndPPDSensorItem.getDurP1()));
         firstLevelChild.set("durP1", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", sdsAndPPDSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(sdsAndPPDSensorItem.getRatioP1()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(sdsAndPPDSensorItem.getRatioP1()));
         firstLevelChild.set("ratioP1", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", sdsAndPPDSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(sdsAndPPDSensorItem.getP2()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(sdsAndPPDSensorItem.getP2()));
         firstLevelChild.set("p2", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", sdsAndPPDSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(sdsAndPPDSensorItem.getDurP2()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(sdsAndPPDSensorItem.getDurP2()));
         firstLevelChild.set("durP2", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", sdsAndPPDSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(sdsAndPPDSensorItem.getRatioP2()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(sdsAndPPDSensorItem.getRatioP2()));
         firstLevelChild.set("ratioP2", secondLevelChild);
 
         mainObject.set("sensors", firstLevelChild);
         firstLevelChild = nodeFactory.objectNode();
 
-        firstLevelChild.put("location", applicationService.parseToFloat(sdsAndPPDSensorItem.getLocation()));
+        firstLevelChild.put("location", applicationService.parseToDouble(sdsAndPPDSensorItem.getLocation()));
         mainObject.set("extra", firstLevelChild);
 
 

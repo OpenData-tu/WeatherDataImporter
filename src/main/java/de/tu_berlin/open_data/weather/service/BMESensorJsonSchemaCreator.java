@@ -30,8 +30,8 @@ public class BMESensorJsonSchemaCreator implements JsonSchemaCreator {
 
         ObjectNode firstLevelChild = nodeFactory.objectNode();
 
-        firstLevelChild.put("lat", applicationService.parseToFloat(bmeSensorItem.getLat()));
-        firstLevelChild.put("lon", applicationService.parseToFloat(bmeSensorItem.getLon()));
+        firstLevelChild.put("lat", applicationService.parseToDouble(bmeSensorItem.getLat()));
+        firstLevelChild.put("lon", applicationService.parseToDouble(bmeSensorItem.getLon()));
 
         mainObject.set("location", firstLevelChild);
 
@@ -41,27 +41,27 @@ public class BMESensorJsonSchemaCreator implements JsonSchemaCreator {
 
         ObjectNode secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(bmeSensorItem.getPressure()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getPressure()));
         firstLevelChild.set("pressure", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(bmeSensorItem.getAltitude()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getAltitude()));
         firstLevelChild.set("altitude", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(bmeSensorItem.getPressureSeaLevel()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getPressureSeaLevel()));
         firstLevelChild.set("pressure_sealevel", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(bmeSensorItem.getTemperature()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getTemperature()));
         firstLevelChild.set("temperature", secondLevelChild);
 
         secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToFloat(bmeSensorItem.getHumidity()));
+        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getHumidity()));
         firstLevelChild.set("humidity", secondLevelChild);
 
 
@@ -69,7 +69,7 @@ public class BMESensorJsonSchemaCreator implements JsonSchemaCreator {
         mainObject.set("sensors", firstLevelChild);
         firstLevelChild = nodeFactory.objectNode();
 
-        firstLevelChild.put("location", applicationService.parseToFloat(bmeSensorItem.getLocation()));
+        firstLevelChild.put("location", applicationService.parseToDouble(bmeSensorItem.getLocation()));
         mainObject.set("extra", firstLevelChild);
 
 
