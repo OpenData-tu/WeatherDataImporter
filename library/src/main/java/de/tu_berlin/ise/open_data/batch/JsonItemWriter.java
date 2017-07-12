@@ -1,7 +1,7 @@
-package de.tu_berlin.open_data.weather.batch;
+package de.tu_berlin.ise.open_data.batch;
 
 
-import de.tu_berlin.open_data.weather.service.KafkaServiceRecordProducer;
+import de.tu_berlin.ise.open_data.service.KafkaRecordProducer;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,14 +13,14 @@ import java.util.List;
 public class JsonItemWriter implements ItemWriter<String> {
 
     @Autowired
-    KafkaServiceRecordProducer kafkaServiceRecordProducer;
+    KafkaRecordProducer kafkaRecordProducer;
 
 
     @Override
     public void write(List<? extends String> items) throws Exception {
 
         for (String jsonObject : items) {
-            kafkaServiceRecordProducer.produce(jsonObject);
+            kafkaRecordProducer.produce(jsonObject);
         }
 
     }

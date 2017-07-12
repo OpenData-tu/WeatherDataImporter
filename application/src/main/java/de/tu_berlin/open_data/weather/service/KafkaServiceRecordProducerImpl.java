@@ -1,5 +1,6 @@
 package de.tu_berlin.open_data.weather.service;
 
+import de.tu_berlin.ise.open_data.service.KafkaRecordProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaServiceRecordProducerImpl implements KafkaServiceRecordProducer {
 
+//    @Autowired
+//    Producer producer;
+
     @Autowired
-    Producer producer;
+    KafkaRecordProducer kafkaRecordProducer;
 
     @Value("${kafka.topic}")
     private String topic;
@@ -22,7 +26,7 @@ public class KafkaServiceRecordProducerImpl implements KafkaServiceRecordProduce
     @Override
     public void produce(String jsonObject) {
 
-      System.out.println(jsonObject);
+      kafkaRecordProducer.produce(jsonObject);
 
      // producer.send(new ProducerRecord(topic, jsonObject));
         // producer.close();
