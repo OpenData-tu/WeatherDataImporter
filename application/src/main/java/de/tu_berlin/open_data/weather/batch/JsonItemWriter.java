@@ -19,7 +19,7 @@ public class JsonItemWriter implements ItemWriter<String> {
     @Override
     public void write(List<? extends String> items) throws Exception {
 
-        for (String jsonObject : items){
+        for (String jsonObject : items) {
             kafkaServiceRecordProducer.produce(jsonObject);
         }
 

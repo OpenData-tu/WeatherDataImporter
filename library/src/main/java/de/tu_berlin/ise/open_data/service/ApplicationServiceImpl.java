@@ -13,12 +13,6 @@ import java.lang.reflect.Field;
 @Component
 public class ApplicationServiceImpl implements ApplicationService {
 
-    private String message = "Hello";
-
-//    public Service(String message) {
-//        this.message = message;
-//    }
-
     @Override
     public String[] getFields(Class<? extends Object> aClass) {
 
@@ -47,6 +41,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     public String toISODateFormat(String date) {
 
         DateTime dateTime = new DateTime(date);
+
+        return dateTime.toDateTimeISO().toString();
+    }
+
+    @Override
+    public String toISODateFormat(String simpleISODate, String appendableTimeAndOffset) {
+
+        DateTime dateTime = new DateTime(simpleISODate + appendableTimeAndOffset);
 
         return dateTime.toDateTimeISO().toString();
     }
