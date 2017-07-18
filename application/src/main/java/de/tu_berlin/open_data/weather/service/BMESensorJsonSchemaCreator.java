@@ -16,64 +16,33 @@ public class BMESensorJsonSchemaCreator implements JsonSchemaCreator {
 
     @Autowired
     ApplicationService applicationService;
+
+    @Autowired
+    private JsonService jsonService;
     @Override
     public String create(Schema schema) {
         BMESensor bmeSensorItem = (BMESensor) schema;
 
         JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
 
-        ObjectNode mainObject = nodeFactory.objectNode();
+        jsonService.setSourceId("luftdaten_info");
+        jsonService.setDevice(bmeSensorItem.getSensorId());
+        jsonService.setTimestamp(bmeSensorItem.getTimestamp().toString());
+        jsonService.setLocation(bmeSensorItem.getLat(), bmeSensorItem.getLon());
+        jsonService.setLicense("Find out");
 
-        mainObject.put("source_id", "luftdaten_info");
-        mainObject.put("device", bmeSensorItem.getSensorId());
-        mainObject.put("timestamp", bmeSensorItem.getTimestamp().toString());
+        jsonService.setSensor("pressure", bmeSensorItem.getSensorType(), bmeSensorItem.getPressure());
+        jsonService.setSensor("altitude", bmeSensorItem.getSensorType(), bmeSensorItem.getAltitude());
+        jsonService.setSensor("pressure_sealevel", bmeSensorItem.getSensorType(), bmeSensorItem.getPressureSeaLevel());
+        jsonService.setSensor("temperature", bmeSensorItem.getSensorType(), bmeSensorItem.getTemperature());
+        jsonService.setSensor("humidity", bmeSensorItem.getSensorType(), bmeSensorItem.getHumidity());
 
+        ObjectNode firstLevelChildHere = nodeFactory.objectNode();
+        firstLevelChildHere.put("location", applicationService.parseToDouble(bmeSensorItem.getLocation()));
 
-        ObjectNode firstLevelChild = nodeFactory.objectNode();
-
-        firstLevelChild.put("lat", applicationService.parseToDouble(bmeSensorItem.getLat()));
-        firstLevelChild.put("lon", applicationService.parseToDouble(bmeSensorItem.getLon()));
-
-        mainObject.set("location", firstLevelChild);
-
-        mainObject.put("license", "find out");
-
-        firstLevelChild = nodeFactory.objectNode();
-
-        ObjectNode secondLevelChild = nodeFactory.objectNode();
-        secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getPressure()));
-        firstLevelChild.set("pressure", secondLevelChild);
-
-        secondLevelChild = nodeFactory.objectNode();
-        secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getAltitude()));
-        firstLevelChild.set("altitude", secondLevelChild);
-
-        secondLevelChild = nodeFactory.objectNode();
-        secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getPressureSeaLevel()));
-        firstLevelChild.set("pressure_sealevel", secondLevelChild);
-
-        secondLevelChild = nodeFactory.objectNode();
-        secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getTemperature()));
-        firstLevelChild.set("temperature", secondLevelChild);
-
-        secondLevelChild = nodeFactory.objectNode();
-        secondLevelChild.put("sensor", bmeSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToDouble(bmeSensorItem.getHumidity()));
-        firstLevelChild.set("humidity", secondLevelChild);
+        jsonService.setExtra("location", firstLevelChildHere);
 
 
-
-        mainObject.set("sensors", firstLevelChild);
-        firstLevelChild = nodeFactory.objectNode();
-
-        firstLevelChild.put("location", applicationService.parseToDouble(bmeSensorItem.getLocation()));
-        mainObject.set("extra", firstLevelChild);
-
-
-        return mainObject.toString();
+        return jsonService.buildJson();
     }
 }

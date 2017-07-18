@@ -27,7 +27,7 @@ public class DHTSensorJsonSchemaCreator implements JsonSchemaCreator {
 
         ObjectNode mainObject = nodeFactory.objectNode();
 
-        mainObject.put("source_id", "luftdaten_info");
+        mainObject.put("sourceId", "luftdaten_info");
         mainObject.put("device", dhtSensorItem.getSensorId());
         mainObject.put("timestamp", dhtSensorItem.getTimestamp().toString());
         //mainObject.put("timestamp_record", "");

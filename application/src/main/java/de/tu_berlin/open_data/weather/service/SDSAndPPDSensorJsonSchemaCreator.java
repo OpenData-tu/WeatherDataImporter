@@ -24,7 +24,7 @@ public class SDSAndPPDSensorJsonSchemaCreator implements JsonSchemaCreator {
 
         ObjectNode mainObject = nodeFactory.objectNode();
 
-        mainObject.put("source_id", "luftdaten_info");
+        mainObject.put("sourceId", "luftdaten_info");
         mainObject.put("device", sdsAndPPDSensorItem.getSensorId());
         mainObject.put("timestamp", sdsAndPPDSensorItem.getTimestamp().toString());
         //mainObject.put("timestamp_record", "");

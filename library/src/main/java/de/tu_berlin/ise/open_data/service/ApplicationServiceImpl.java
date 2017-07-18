@@ -9,6 +9,10 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class ApplicationServiceImpl implements ApplicationService {
@@ -18,12 +22,18 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         Field[] aClassDeclaredFields = aClass.getDeclaredFields();
 
-        String[] fieldsArray = new String[aClassDeclaredFields.length];
+        List<String> fields = new ArrayList<>();
 
-        for (int index = 0; index < aClassDeclaredFields.length; index++)
-            fieldsArray[index] = aClassDeclaredFields[index].getName();
+            for (Field field: aClassDeclaredFields){
 
-        return fieldsArray;
+                if (Modifier.isProtected(field.getModifiers()))
+                    continue;
+
+                fields.add(field.getName());
+
+            }
+
+        return fields.toArray(new String[fields.size()]);
     }
 
     @Override

@@ -28,9 +28,9 @@ public class WeatherDataImporterApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        jdbcTemplate.execute("UPDATE BATCH_JOB_EXECUTION a SET a.VERSION=a.VERSION + 1, END_TIME=LAST_UPDATED," +
-                " STATUS='FAILED', EXIT_CODE='FAILED' WHERE STATUS='STARTED'" +
-                " AND a.JOB_INSTANCE_ID = (SELECT JOB_INSTANCE_ID FROM BATCH_JOB_INSTANCE WHERE JOB_INSTANCE_ID = a.JOB_INSTANCE_ID)" +
-                " AND END_TIME IS NULL");
+//        jdbcTemplate.execute("UPDATE BATCH_JOB_EXECUTION a SET a.VERSION=a.VERSION + 1, END_TIME=LAST_UPDATED," +
+//                " STATUS='FAILED', EXIT_CODE='FAILED' WHERE STATUS='STARTED'" +
+//                " AND a.JOB_INSTANCE_ID = (SELECT JOB_INSTANCE_ID FROM BATCH_JOB_INSTANCE WHERE JOB_INSTANCE_ID = a.JOB_INSTANCE_ID)" +
+//                " AND END_TIME IS NULL");
     }
 }
