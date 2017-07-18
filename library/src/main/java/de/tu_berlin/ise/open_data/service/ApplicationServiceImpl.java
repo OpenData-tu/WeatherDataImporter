@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -26,11 +25,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             for (Field field: aClassDeclaredFields){
 
-                if (Modifier.isProtected(field.getModifiers()))
+                if (Modifier.isFinal(field.getModifiers()))
                     continue;
 
                 fields.add(field.getName());
-
             }
 
         return fields.toArray(new String[fields.size()]);

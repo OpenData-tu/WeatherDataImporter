@@ -3,6 +3,7 @@ package de.tu_berlin.ise.open_data.config;
 import de.tu_berlin.ise.open_data.batch.JobCompletionNotificationListener;
 import de.tu_berlin.ise.open_data.batch.JsonItemWriter;
 import de.tu_berlin.ise.open_data.service.ApplicationServiceImpl;
+import de.tu_berlin.ise.open_data.service.JsonServiceImpl;
 import de.tu_berlin.ise.open_data.service.KafkaRecordProducerImpl;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -48,6 +49,11 @@ public class ServiceConfiguration {
     @Bean
     JsonItemWriter jsonItemWriter() {
         return new JsonItemWriter();
+    }
+
+    @Bean
+    JsonServiceImpl jsonService() {
+        return new JsonServiceImpl();
     }
 
     @Bean

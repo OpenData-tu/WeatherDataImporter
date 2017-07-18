@@ -8,27 +8,26 @@ import de.tu_berlin.ise.open_data.model.Schema;
 
 public class BMESensor extends Schema {
 
-  private String sensorId;
-  private String sensorType;
-  private String location;
-  private String lat;
-  private String lon;
-  private String timestamp;
-  private String pressure;
-  private String altitude;
-  private String pressureSeaLevel;
-  private String temperature;
-  private String humidity;
+    private String sensorId;
+    private String sensorType;
+    private String location;
+    private String lat;
+    private String lon;
+    private String timestamp;
+    private String pressure;
+    private String altitude;
+    private String pressureSeaLevel;
+    private String temperature;
+    private String humidity;
 
-  protected String sourceId;
+    /**
+     * Declared as final to skip when parsing csv file
+     */
 
-    public String getSourceId() {
-        return sourceId;
-    }
+    private final String sourceId = "luftdaten_info";
+    private final String license = "find out";
 
-    public void setSourceId(String sourceId) {
-        this.sourceId = sourceId;
-    }
+
 
     public String getSensorId() {
         return sensorId;
@@ -119,6 +118,13 @@ public class BMESensor extends Schema {
     }
 
 
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public String getLicense() {
+        return license;
+    }
 
     @Override
     public String getDelimiter() {

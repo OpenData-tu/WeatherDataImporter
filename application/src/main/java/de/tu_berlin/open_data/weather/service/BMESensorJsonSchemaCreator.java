@@ -1,12 +1,12 @@
 package de.tu_berlin.open_data.weather.service;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.tu_berlin.ise.open_data.model.Schema;
 import de.tu_berlin.open_data.weather.model.BMESensor;
+import de.tu_berlin.open_data.weather.model.Extra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import de.tu_berlin.ise.open_data.service.ApplicationService;
+
+import de.tu_berlin.ise.open_data.service.JsonServiceImpl;
 
 /**
  * Created by ahmadjawid on 6/9/17.
@@ -15,34 +15,27 @@ import de.tu_berlin.ise.open_data.service.ApplicationService;
 public class BMESensorJsonSchemaCreator implements JsonSchemaCreator {
 
     @Autowired
-    ApplicationService applicationService;
-
-    @Autowired
-    private JsonService jsonService;
+    private JsonServiceImpl jsonServiceImpl;
     @Override
     public String create(Schema schema) {
         BMESensor bmeSensorItem = (BMESensor) schema;
 
-        JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+        jsonServiceImpl.setSourceId(bmeSensorItem.getSourceId());
+        jsonServiceImpl.setDevice(bmeSensorItem.getSensorId());
+        jsonServiceImpl.setTimestamp(bmeSensorItem.getTimestamp());
+        jsonServiceImpl.setLocation(bmeSensorItem.getLat(), bmeSensorItem.getLon());
+        jsonServiceImpl.setLicense(bmeSensorItem.getLicense());
 
-        jsonService.setSourceId("luftdaten_info");
-        jsonService.setDevice(bmeSensorItem.getSensorId());
-        jsonService.setTimestamp(bmeSensorItem.getTimestamp().toString());
-        jsonService.setLocation(bmeSensorItem.getLat(), bmeSensorItem.getLon());
-        jsonService.setLicense("Find out");
+        jsonServiceImpl.setSensor("pressure", bmeSensorItem.getSensorType(), bmeSensorItem.getPressure());
+        jsonServiceImpl.setSensor("altitude", bmeSensorItem.getSensorType(), bmeSensorItem.getAltitude());
+        jsonServiceImpl.setSensor("pressure_sealevel", bmeSensorItem.getSensorType(), bmeSensorItem.getPressureSeaLevel());
+        jsonServiceImpl.setSensor("temperature", bmeSensorItem.getSensorType(), bmeSensorItem.getTemperature());
+        jsonServiceImpl.setSensor("humidity", bmeSensorItem.getSensorType(), bmeSensorItem.getHumidity());
 
-        jsonService.setSensor("pressure", bmeSensorItem.getSensorType(), bmeSensorItem.getPressure());
-        jsonService.setSensor("altitude", bmeSensorItem.getSensorType(), bmeSensorItem.getAltitude());
-        jsonService.setSensor("pressure_sealevel", bmeSensorItem.getSensorType(), bmeSensorItem.getPressureSeaLevel());
-        jsonService.setSensor("temperature", bmeSensorItem.getSensorType(), bmeSensorItem.getTemperature());
-        jsonService.setSensor("humidity", bmeSensorItem.getSensorType(), bmeSensorItem.getHumidity());
+        Extra extra = new Extra(bmeSensorItem.getLocation());
 
-        ObjectNode firstLevelChildHere = nodeFactory.objectNode();
-        firstLevelChildHere.put("location", applicationService.parseToDouble(bmeSensorItem.getLocation()));
+        jsonServiceImpl.setExtra(extra);
 
-        jsonService.setExtra("location", firstLevelChildHere);
-
-
-        return jsonService.buildJson();
+        return jsonServiceImpl.build();
     }
 }
