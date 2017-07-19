@@ -8,6 +8,10 @@ import de.tu_berlin.ise.open_data.model.Schema;
 
 public class BMESensor extends Schema {
 
+    /**
+     * The order of declaring fields should be the same as in csv file to parse correctly
+     */
+
     private String sensorId;
     private String sensorType;
     private String location;
@@ -21,10 +25,13 @@ public class BMESensor extends Schema {
     private String humidity;
 
     /**
-     * Declared as final to skip when parsing csv file
+     * Declared as final to skip this field when parsing csv file
      */
-
     private final String sourceId = "luftdaten_info";
+
+    /**
+     * Declared as final to skip this field when parsing csv file
+     */
     private final String license = "find out";
 
 

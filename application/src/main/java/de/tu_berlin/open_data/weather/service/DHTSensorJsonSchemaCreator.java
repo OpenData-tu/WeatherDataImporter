@@ -3,7 +3,9 @@ package de.tu_berlin.open_data.weather.service;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.tu_berlin.ise.open_data.model.Schema;
+import de.tu_berlin.ise.open_data.service.JsonServiceImpl;
 import de.tu_berlin.open_data.weather.model.DHTSensor;
+import de.tu_berlin.open_data.weather.model.Extra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import de.tu_berlin.ise.open_data.service.ApplicationService;
@@ -16,54 +18,30 @@ import de.tu_berlin.ise.open_data.service.ApplicationService;
 public class DHTSensorJsonSchemaCreator implements JsonSchemaCreator {
 
     @Autowired
-    private ApplicationService applicationService;
+    private JsonServiceImpl jsonService;
 
     @Override
     public String create(Schema dhtSensor) {
 
         DHTSensor dhtSensorItem = (DHTSensor) dhtSensor;
 
-        JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+        jsonService.setSourceId(dhtSensorItem.getSourceId());
+        jsonService.setDevice(dhtSensorItem.getSensorId());
+        jsonService.setTimestamp(dhtSensorItem.getTimestamp());
 
-        ObjectNode mainObject = nodeFactory.objectNode();
+        jsonService.setLocation(dhtSensorItem.getLat(), dhtSensorItem.getLon());
 
-        mainObject.put("sourceId", "luftdaten_info");
-        mainObject.put("device", dhtSensorItem.getSensorId());
-        mainObject.put("timestamp", dhtSensorItem.getTimestamp().toString());
-        //mainObject.put("timestamp_record", "");
+        jsonService.setLicense(dhtSensorItem.getLicense());
 
+        jsonService.setSensor("temperature", dhtSensorItem.getSensorType(), dhtSensorItem.getTemperature());
+        jsonService.setSensor("humidity", dhtSensorItem.getSensorType(), dhtSensorItem.getHumidity());
 
-        ObjectNode firstLevelChild = nodeFactory.objectNode();
+        Extra extra = new Extra(dhtSensorItem.getLocation());
 
-        firstLevelChild.put("lat", applicationService.parseToDouble(dhtSensorItem.getLat()));
-        firstLevelChild.put("lon", applicationService.parseToDouble(dhtSensorItem.getLon()));
-
-        mainObject.set("location", firstLevelChild);
-
-        mainObject.put("license", "find out");
-
-        firstLevelChild = nodeFactory.objectNode();
-
-        ObjectNode secondLevelChild = nodeFactory.objectNode();
-        secondLevelChild.put("sensor", dhtSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToDouble(dhtSensorItem.getTemperature()));
-        firstLevelChild.set("temperature", secondLevelChild);
-
-        secondLevelChild = nodeFactory.objectNode();
-        secondLevelChild.put("sensor", dhtSensorItem.getSensorType());
-        secondLevelChild.put("observation_value", applicationService.parseToDouble(dhtSensorItem.getHumidity()));
-        firstLevelChild.set("humidity", secondLevelChild);
+        jsonService.setExtra(extra);
 
 
-
-        mainObject.set("sensors", firstLevelChild);
-        firstLevelChild = nodeFactory.objectNode();
-
-        firstLevelChild.put("location", applicationService.parseToDouble(dhtSensorItem.getLocation()));
-        mainObject.set("extra", firstLevelChild);
-
-
-        return mainObject.toString();
+        return jsonService.build();
 
     }
 

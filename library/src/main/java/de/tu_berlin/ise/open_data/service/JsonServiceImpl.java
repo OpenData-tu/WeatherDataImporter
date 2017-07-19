@@ -79,7 +79,6 @@ public class JsonServiceImpl {
 
     }
 
-    //TODO is not finished - rethink from sensors part
     public String build() {
 
         mainObject.put("sourceId", sourceId);

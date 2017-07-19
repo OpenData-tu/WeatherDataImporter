@@ -16,6 +16,16 @@ public class DHTSensor extends Schema {
     private String temperature;
     private String humidity;
 
+    /**
+     * Declared as final to skip this field when parsing csv file
+     */
+    private final String sourceId = "luftdaten_info";
+
+    /**
+     * Declared as final to skip this field when parsing csv file
+     */
+    private final String license = "find out";
+
 
     public String getSensorId() {
         return sensorId;
@@ -79,6 +89,14 @@ public class DHTSensor extends Schema {
 
     public void setHumidity(String humidity) {
         this.humidity = humidity;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public String getLicense() {
+        return license;
     }
 
     @Override

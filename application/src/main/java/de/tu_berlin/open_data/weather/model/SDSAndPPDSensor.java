@@ -21,6 +21,16 @@ public class SDSAndPPDSensor extends Schema {
     private String durP2;
     private String ratioP2;
 
+    /**
+     * Declared as final to skip this field when parsing csv file
+     */
+    private final String sourceId = "luftdaten_info";
+
+    /**
+     * Declared as final to skip this field when parsing csv file
+     */
+    private final String license = "find out";
+
     public String getSensorId() {
         return sensorId;
     }
@@ -115,6 +125,14 @@ public class SDSAndPPDSensor extends Schema {
 
     public void setRatioP2(String ratioP2) {
         this.ratioP2 = ratioP2;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public String getLicense() {
+        return license;
     }
 
     @Override
