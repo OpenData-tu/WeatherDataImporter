@@ -39,8 +39,6 @@ public class BatchConfiguration {
     private String resourceUrl;
 
 
-
-
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
 
@@ -59,70 +57,40 @@ public class BatchConfiguration {
 
     @Bean
     public MultiResourceItemReader readerBME() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
-        String sensorType = "bme";
-        multiResourceItemReader.setResources(httpFileDownloaderService.getUrlResources(resourceUrl, sensorType));
+        CustomMultiResourceItemReader multiResourceItemReader = new CustomMultiResourceItemReader();
 
-        FlatFileItemReader reader = new FlatFileItemReader<>();
+        multiResourceItemReader.setProperties(httpFileDownloaderService, applicationService, resourceUrl, "bme", BMESensor.class);
 
-        reader.setLinesToSkip(1);
-
-
-        reader.setLineMapper(applicationService.createLineMapper(BMESensor.class));
-
-        multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
     }
 
 
     @Bean
     public MultiResourceItemReader readerDHT() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
-        String sensorType = "dht";
-        multiResourceItemReader.setResources(httpFileDownloaderService.getUrlResources(resourceUrl, sensorType));
+        CustomMultiResourceItemReader multiResourceItemReader = new CustomMultiResourceItemReader();
 
-        FlatFileItemReader reader = new FlatFileItemReader<>();
+        multiResourceItemReader.setProperties(httpFileDownloaderService, applicationService, resourceUrl, "dht", DHTSensor.class);
 
-        reader.setLinesToSkip(1);
-
-        reader.setLineMapper(applicationService.createLineMapper(DHTSensor.class));
-
-        multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
     }
 
 
     @Bean
     public MultiResourceItemReader readerSDS() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
-        String sensorType = "sds";
-        multiResourceItemReader.setResources(httpFileDownloaderService.getUrlResources(resourceUrl, sensorType));
+        CustomMultiResourceItemReader multiResourceItemReader = new CustomMultiResourceItemReader();
 
-        FlatFileItemReader reader = new FlatFileItemReader<>();
+        multiResourceItemReader.setProperties(httpFileDownloaderService, applicationService, resourceUrl, "sds", SDSAndPPDSensor.class);
 
-        reader.setLinesToSkip(1);
-
-        reader.setLineMapper(applicationService.createLineMapper(SDSAndPPDSensor.class));
-
-        multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
     }
 
 
     @Bean
     public MultiResourceItemReader readerPPD() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        MultiResourceItemReader multiResourceItemReader = new MultiResourceItemReader();
-        String sensorType = "ppd";
-        multiResourceItemReader.setResources(httpFileDownloaderService.getUrlResources(resourceUrl, sensorType));
+        CustomMultiResourceItemReader multiResourceItemReader = new CustomMultiResourceItemReader();
 
-        FlatFileItemReader reader = new FlatFileItemReader<>();
+        multiResourceItemReader.setProperties(httpFileDownloaderService, applicationService, resourceUrl, "ppd", SDSAndPPDSensor.class);
 
-        reader.setLinesToSkip(1);
-
-
-        reader.setLineMapper(applicationService.createLineMapper(SDSAndPPDSensor.class));
-
-        multiResourceItemReader.setDelegate(reader);
         return multiResourceItemReader;
     }
 
@@ -197,13 +165,5 @@ public class BatchConfiguration {
                 .processor(sdsAndPPDSensorItemProcessor())
                 .writer(writer())
                 .build();
-    }
-
-    //The configuration used to manually fetching a particular job from job registry and executing it
-    @Bean
-    public JobRegistryBeanPostProcessor jobRegistryBeanPostProcess(JobRegistry jobRegistry) {
-        JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor = new JobRegistryBeanPostProcessor();
-        jobRegistryBeanPostProcessor.setJobRegistry(jobRegistry);
-        return jobRegistryBeanPostProcessor;
     }
 }

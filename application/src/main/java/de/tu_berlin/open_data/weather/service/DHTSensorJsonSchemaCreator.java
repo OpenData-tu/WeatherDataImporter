@@ -1,14 +1,11 @@
 package de.tu_berlin.open_data.weather.service;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.tu_berlin.ise.open_data.model.Schema;
-import de.tu_berlin.ise.open_data.service.JsonServiceImpl;
+import de.tu_berlin.ise.open_data.service.JsonStringBuilder;
 import de.tu_berlin.open_data.weather.model.DHTSensor;
 import de.tu_berlin.open_data.weather.model.Extra;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.json.JSONException;
 import org.springframework.stereotype.Service;
-import de.tu_berlin.ise.open_data.service.ApplicationService;
 
 
 /**
@@ -17,31 +14,32 @@ import de.tu_berlin.ise.open_data.service.ApplicationService;
 @Service
 public class DHTSensorJsonSchemaCreator implements JsonSchemaCreator {
 
-    @Autowired
-    private JsonServiceImpl jsonService;
+
 
     @Override
-    public String create(Schema dhtSensor) {
+    public String create(Schema dhtSensor) throws JSONException {
 
         DHTSensor dhtSensorItem = (DHTSensor) dhtSensor;
 
-        jsonService.setSourceId(dhtSensorItem.getSourceId());
-        jsonService.setDevice(dhtSensorItem.getSensorId());
-        jsonService.setTimestamp(dhtSensorItem.getTimestamp());
+        JsonStringBuilder jsonBuilder = new JsonStringBuilder();
 
-        jsonService.setLocation(dhtSensorItem.getLat(), dhtSensorItem.getLon());
+        jsonBuilder.setSourceId(dhtSensorItem.getSourceId());
+        jsonBuilder.setDevice(dhtSensorItem.getSensorId());
+        jsonBuilder.setTimestamp(dhtSensorItem.getTimestamp());
 
-        jsonService.setLicense(dhtSensorItem.getLicense());
+        jsonBuilder.setLocation(dhtSensorItem.getLat(), dhtSensorItem.getLon());
 
-        jsonService.setSensor("temperature", dhtSensorItem.getSensorType(), dhtSensorItem.getTemperature());
-        jsonService.setSensor("humidity", dhtSensorItem.getSensorType(), dhtSensorItem.getHumidity());
+        jsonBuilder.setLicense(dhtSensorItem.getLicense());
+
+        jsonBuilder.setSensor("temperature", dhtSensorItem.getSensorType(), dhtSensorItem.getTemperature());
+        jsonBuilder.setSensor("humidity", dhtSensorItem.getSensorType(), dhtSensorItem.getHumidity());
 
         Extra extra = new Extra(dhtSensorItem.getLocation());
 
-        jsonService.setExtra(extra);
+        jsonBuilder.setExtra(extra);
 
 
-        return jsonService.build();
+        return jsonBuilder.build();
 
     }
 

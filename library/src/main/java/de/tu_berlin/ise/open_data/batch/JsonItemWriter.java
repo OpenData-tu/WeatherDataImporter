@@ -13,11 +13,13 @@ import java.util.List;
 public class JsonItemWriter implements ItemWriter<String> {
 
     @Autowired
-    KafkaRecordProducer kafkaRecordProducer;
+    private KafkaRecordProducer kafkaRecordProducer;
 
 
     @Override
     public void write(List<? extends String> items) throws Exception {
+
+       // System.out.println(items.get(0));
 
         for (String jsonObject : items) {
             kafkaRecordProducer.produce(jsonObject);

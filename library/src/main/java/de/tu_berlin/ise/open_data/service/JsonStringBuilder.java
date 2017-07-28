@@ -3,6 +3,8 @@ package de.tu_berlin.ise.open_data.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,17 +13,18 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class JsonServiceImpl {
+public class JsonStringBuilder {
 
 
-    @Autowired
     private ApplicationService applicationService;
 
-    private JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+    private JsonNodeFactory nodeFactory;
 
-    private ObjectNode mainObject = nodeFactory.objectNode();
+    private ObjectNode mainObject;
 
-    private ObjectNode sensors = nodeFactory.objectNode();
+    private ObjectNode sensors;
+
+    private ObjectNode location;
 
     private ObjectNode extra;
 
@@ -33,38 +36,45 @@ public class JsonServiceImpl {
 
     private String license;
 
-    private ObjectNode location = nodeFactory.objectNode();
 
-   public void setSourceId(String sourceId) {
+    public JsonStringBuilder() {
+        applicationService = new ApplicationServiceImpl();
+        nodeFactory = JsonNodeFactory.instance;
+        mainObject = nodeFactory.objectNode();
+        sensors = nodeFactory.objectNode();
+        location = nodeFactory.objectNode();
+    }
+
+    public void setSourceId(String sourceId) {
 
         this.sourceId = sourceId;
 
     }
 
-   public void setDevice(String device) {
+    public void setDevice(String device) {
 
         this.device = device;
     }
 
-   public void setTimestamp(String timestamp) {
+    public void setTimestamp(String timestamp) {
 
         this.timestamp = timestamp;
     }
 
 
-   public void setLocation(String lat, String lon) {
+    public void setLocation(String lat, String lon) {
         location.put("lat", applicationService.parseToDouble(lat));
         location.put("lon", applicationService.parseToDouble(lon));
     }
 
-   public void setLicense(String license) {
+    public void setLicense(String license) {
 
         this.license = license;
 
     }
 
-   public void setSensor(String measurement, String sensor, String observationValue) {
-       ObjectNode secondLevelChild = nodeFactory.objectNode();
+    public void setSensor(String measurement, String sensor, String observationValue) {
+        ObjectNode secondLevelChild = nodeFactory.objectNode();
         secondLevelChild.put("sensor", sensor);
         secondLevelChild.put("observation_value", applicationService.parseToDouble(observationValue));
         sensors.set(measurement, secondLevelChild);
@@ -79,7 +89,7 @@ public class JsonServiceImpl {
 
     }
 
-    public String build() {
+    public String build() throws JSONException {
 
         mainObject.put("sourceId", sourceId);
         mainObject.put("device", device);
@@ -89,6 +99,9 @@ public class JsonServiceImpl {
         mainObject.set("sensors", sensors);
         mainObject.set("extra", extra);
 
+        JSONObject jsonObject = new JSONObject(mainObject.toString());
+
+        //  mainObject.removeAll();
 
         return mainObject.toString();
     }

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="787.5357142857142" y="0.0">de.tu_berlin.ise.open_data.service.KafkaRecordProducer</node>
+    <node x="0.0" y="189.0">de.tu_berlin.open_data.weather.batch.BMESensorItemProcessor</node>
+    <node x="1148.6607142857142" y="499.0">de.tu_berlin.ise.open_data.config.ServiceConfiguration</node>
+    <node x="1921.7857142857142" y="488.0">de.tu_berlin.open_data.weather.service.BMESensorJsonSchemaCreator</node>
+    <node x="941.0" y="200.0">de.tu_berlin.ise.open_data.service.KafkaRecordProducerImpl</node>
+    <node x="1168.0" y="134.0">de.tu_berlin.ise.open_data.config.KafkaProperties</node>
+    <node x="583.0" y="211.0">de.tu_berlin.ise.open_data.batch.JsonItemWriter</node>
+    <node x="1865.625" y="0.0">de.tu_berlin.open_data.weather.service.JsonSchemaCreator</node>
+    <node x="295.04166666666674" y="444.0">de.tu_berlin.open_data.weather.batch.BatchConfiguration</node>
+    <node x="227.0" y="189.0">de.tu_berlin.open_data.weather.batch.CustomMultiResourceItemReader</node>
+    <node x="2054.0" y="79.0">de.tu_berlin.open_data.weather.model.BMESensor</node>
+    <node x="1557.0" y="112.0">de.tu_berlin.ise.open_data.service.JsonServiceImpl</node>
+    <node x="2207.0" y="0.0">de.tu_berlin.ise.open_data.model.Schema</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="de.tu_berlin.open_data.weather.model.BMESensor" target="de.tu_berlin.ise.open_data.model.Schema">
+      <point x="0.0" y="-157.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="de.tu_berlin.open_data.weather.batch.BatchConfiguration" target="de.tu_berlin.open_data.weather.batch.CustomMultiResourceItemReader">
+      <point x="0.0" y="-80.5" />
+      <point x="435.54166666666674" y="424.0" />
+      <point x="395.0" y="424.0" />
+      <point x="0.0" y="47.5" />
+    </edge>
+    <edge source="de.tu_berlin.open_data.weather.batch.BMESensorItemProcessor" target="de.tu_berlin.open_data.weather.service.JsonSchemaCreator">
+      <point x="0.0" y="-47.5" />
+      <point x="103.5" y="59.0" />
+      <point x="1908.625" y="59.0" />
+      <point x="-43.0" y="14.5" />
+    </edge>
+    <edge source="de.tu_berlin.ise.open_data.batch.JsonItemWriter" target="de.tu_berlin.ise.open_data.service.KafkaRecordProducer">
+      <point x="0.0" y="-25.5" />
+      <point x="752.0" y="49.0" />
+      <point x="833.0357142857142" y="49.0" />
+      <point x="-45.5" y="14.5" />
+    </edge>
+    <edge source="de.tu_berlin.open_data.weather.service.BMESensorJsonSchemaCreator" target="de.tu_berlin.open_data.weather.model.BMESensor">
+      <point x="95.33333333333326" y="-36.5" />
+      <point x="2160.1190476190477" y="424.0" />
+      <point x="2255.0" y="424.0" />
+      <point x="0.0" y="157.5" />
+    </edge>
+    <edge source="de.tu_berlin.open_data.weather.service.BMESensorJsonSchemaCreator" target="de.tu_berlin.open_data.weather.service.JsonSchemaCreator">
+      <point x="0.0" y="-36.5" />
+      <point x="2064.785714285714" y="424.0" />
+      <point x="2043.5" y="424.0" />
+      <point x="2043.5" y="59.0" />
+      <point x="1994.625" y="59.0" />
+      <point x="43.0" y="14.5" />
+    </edge>
+    <edge source="de.tu_berlin.ise.open_data.service.KafkaRecordProducerImpl" target="de.tu_berlin.ise.open_data.service.KafkaRecordProducer">
+      <point x="0.0" y="-36.5" />
+      <point x="1044.5" y="49.0" />
+      <point x="924.0357142857142" y="49.0" />
+      <point x="45.5" y="14.5" />
+    </edge>
+    <edge source="de.tu_berlin.ise.open_data.config.ServiceConfiguration" target="de.tu_berlin.ise.open_data.service.JsonServiceImpl">
+      <point x="99.75000000000011" y="-25.5" />
+      <point x="1381.4107142857144" y="424.0" />
+      <point x="1676.0" y="424.0" />
+      <point x="-119.0" y="124.5" />
+    </edge>
+    <edge source="de.tu_berlin.ise.open_data.config.ServiceConfiguration" target="de.tu_berlin.ise.open_data.service.KafkaRecordProducerImpl">
+      <point x="-33.249999999999886" y="-25.5" />
+      <point x="1248.4107142857144" y="414.0" />
+      <point x="1044.5" y="414.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="de.tu_berlin.open_data.weather.batch.BatchConfiguration" target="de.tu_berlin.open_data.weather.batch.BMESensorItemProcessor">
+      <point x="-93.66666666666669" y="-80.5" />
+      <point x="341.875" y="424.0" />
+      <point x="103.5" y="424.0" />
+      <point x="0.0" y="47.5" />
+    </edge>
+    <edge source="de.tu_berlin.open_data.weather.batch.BatchConfiguration" target="de.tu_berlin.ise.open_data.batch.JsonItemWriter">
+      <point x="93.66666666666669" y="-80.5" />
+      <point x="529.2083333333335" y="424.0" />
+      <point x="667.5" y="424.0" />
+      <point x="-84.5" y="25.5" />
+    </edge>
+    <edge source="de.tu_berlin.ise.open_data.config.ServiceConfiguration" target="de.tu_berlin.ise.open_data.config.KafkaProperties">
+      <point x="33.250000000000114" y="-25.5" />
+      <point x="1314.9107142857144" y="424.0" />
+      <point x="1352.5" y="424.0" />
+      <point x="0.0" y="102.5" />
+    </edge>
+    <edge source="de.tu_berlin.ise.open_data.config.ServiceConfiguration" target="de.tu_berlin.ise.open_data.batch.JsonItemWriter">
+      <point x="-99.74999999999989" y="-25.5" />
+      <point x="1181.9107142857144" y="424.0" />
+      <point x="836.5" y="424.0" />
+      <point x="84.5" y="25.5" />
+    </edge>
+    <edge source="de.tu_berlin.open_data.weather.service.BMESensorJsonSchemaCreator" target="de.tu_berlin.ise.open_data.service.JsonServiceImpl">
+      <point x="-95.33333333333326" y="-36.5" />
+      <point x="1969.452380952381" y="424.0" />
+      <point x="1914.0" y="424.0" />
+      <point x="119.0" y="124.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="691.0" y="213.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
