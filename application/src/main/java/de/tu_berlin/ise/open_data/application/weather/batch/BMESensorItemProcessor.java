@@ -2,9 +2,7 @@ package de.tu_berlin.ise.open_data.application.weather.batch;
 
 import de.tu_berlin.ise.open_data.library.service.ApplicationService;
 import de.tu_berlin.ise.open_data.application.weather.model.BMESensor;
-import de.tu_berlin.ise.open_data.application.weather.service.JsonSchemaCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.tu_berlin.ise.open_data.library.service.JsonSchemaCreator;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -36,9 +36,9 @@ public class KafkaProperties {
     private String valueSerializer = "org.apache.kafka.common.serialization.StringSerializer";
 
     /**
-     * defaults to flat
+     * defaults to topic
      */
-    private String topic = "flat";
+    private String topic = "topic";
 
     public String getAcks() {
         return acks;

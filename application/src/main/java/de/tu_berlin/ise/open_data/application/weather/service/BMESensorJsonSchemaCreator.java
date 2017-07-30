@@ -3,6 +3,7 @@ package de.tu_berlin.ise.open_data.application.weather.service;
 import de.tu_berlin.ise.open_data.application.weather.model.BMESensor;
 import de.tu_berlin.ise.open_data.library.model.Schema;
 import de.tu_berlin.ise.open_data.application.weather.model.Extra;
+import de.tu_berlin.ise.open_data.library.service.JsonSchemaCreator;
 import org.json.JSONException;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,7 @@
 package de.tu_berlin.ise.open_data.application.weather.service;
 
 import de.tu_berlin.ise.open_data.library.model.Schema;
+import de.tu_berlin.ise.open_data.library.service.JsonSchemaCreator;
 import de.tu_berlin.ise.open_data.library.service.JsonStringBuilder;
 import de.tu_berlin.ise.open_data.application.weather.model.DHTSensor;
 import de.tu_berlin.ise.open_data.application.weather.model.Extra;
