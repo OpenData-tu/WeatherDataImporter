@@ -11,12 +11,20 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created by ahmadjawid on 6/20/17.
+ * Implementation of {@link JsonSchemaCreator}
  */
 @Service
 public class DHTSensorJsonSchemaCreator implements JsonSchemaCreator {
 
 
 
+
+    /**
+     * Get an objects which is extended from {@link Schema} class
+     * and converts it to json
+     * @param dhtSensor
+     * @return String
+     * */
     @Override
     public String create(Schema dhtSensor) throws JSONException {
 

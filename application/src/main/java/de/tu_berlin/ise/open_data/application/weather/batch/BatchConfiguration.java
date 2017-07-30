@@ -180,7 +180,7 @@ public class BatchConfiguration {
     /**
      * Registers a job step named 'step1' which defines how to read, process and write.
      * Used to read, process, write BME sensor type objects.
-     * @return {@link Job}
+     * @return {@link Step}
      * */
     @Bean
     public Step step1() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
@@ -196,7 +196,7 @@ public class BatchConfiguration {
     /**
      * Registers a job step named 'step2' which defines how to read, process and write.
      * Used to read, process, write DHT sensor type objects.
-     * @return {@link Job}
+     * @return {@link Step}
      * */
     @Bean
     public Step step2() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
@@ -211,7 +211,7 @@ public class BatchConfiguration {
     /**
      * Registers a job step named 'step3' which defines how to read, process and write.
      * Used to read, process, write SDS sensor type objects.
-     * @return {@link Job}
+     * @return {@link Step}
      * */
     @Bean
     public Step step3() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
@@ -226,7 +226,7 @@ public class BatchConfiguration {
     /**
      * Registers a job step named 'step4' which defines how to read, process and write.
      * Used to read, process, write PPD sensor type objects.
-     * @return {@link Job}
+     * @return {@link Step}
      * */
     @Bean
     public Step step4() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {

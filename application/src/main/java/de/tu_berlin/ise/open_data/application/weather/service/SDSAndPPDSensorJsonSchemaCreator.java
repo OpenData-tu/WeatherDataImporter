@@ -10,12 +10,20 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created by ahmadjawid on 6/20/17.
+ * Implementation of {@link JsonSchemaCreator}
  */
 
 @Service
 public class SDSAndPPDSensorJsonSchemaCreator implements JsonSchemaCreator {
 
 
+
+    /**
+     * Get an objects which is extended from {@link Schema} class
+     * and converts it to json
+     * @param schema
+     * @return String
+     * */
     @Override
     public String create(Schema schema) throws JSONException {
         SDSAndPPDSensor sdsAndPPDSensorItem = (SDSAndPPDSensor) schema;

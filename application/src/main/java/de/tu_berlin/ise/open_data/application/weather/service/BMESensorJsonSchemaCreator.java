@@ -11,6 +11,7 @@ import de.tu_berlin.ise.open_data.library.service.JsonStringBuilder;
 
 /**
  * Created by ahmadjawid on 6/9/17.
+ * Implementation of {@link JsonSchemaCreator}
  */
 @Service
 public class BMESensorJsonSchemaCreator implements JsonSchemaCreator {
@@ -19,6 +20,13 @@ public class BMESensorJsonSchemaCreator implements JsonSchemaCreator {
 
 
     private BMESensor bmeSensorItem;
+
+    /**
+     * Get an objects which is extended from {@link Schema} class
+     * and converts it to json
+     * @param schema
+     * @return String
+     * */
     @Override
     public String create(Schema schema) throws JSONException {
         bmeSensorItem = (BMESensor) schema;
