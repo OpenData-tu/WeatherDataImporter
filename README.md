@@ -1,9 +1,11 @@
 
 # Weather Data Importer + Kafka Data Producer
+
 WeatherDataImporter + Data Producer for Kafka Queue is part of our extensible ETL framework. In this importer, a specific data source is used to extract data from, process them and write them into the Kafka queue.
 
 -----------------------------
 ## Components
+
 - Data Source
 - Batch Jobs
   - Step
@@ -32,7 +34,9 @@ WeatherDataImporter + Data Producer for Kafka Queue is part of our extensible ET
 * resource.url  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Path to the resource url (url contains all the files for one specific day), defaults to the last day 
 
 --------------------------------
+
 ## Running:
+
 Inside the root directory of the project run the commands:
 ```
 $ cd application
@@ -40,6 +44,7 @@ $ mvn spring-boot:run
 ```
 
 ## Building
+
 For building run the following command either inside the root directory of the project, or inside the 'application' directory:
 ```
 $ mvn clean install
@@ -49,11 +54,14 @@ the generated jar file is inside application/target directory.
 --------------------------------
 
 ## Use the docker
+
 #### Pulling the image:
+
 ```sh
 $ docker pull ahmadjawidjami/luftdaten_info_importer
 ```
 #### Running with sample environment variables:
+
 ```sh
 $  docker run \
 --env "RESOURCE_URL=http://archive.luftdaten.info/2016-12-10/" \
@@ -62,8 +70,10 @@ $  docker run \
 ahmadjawidjami/luftdaten_info_importer
 ```
 #### Mandatory enviroment variable:
+
 - KAFKA_BOOTSTRAP_SERVERS
 
 
 #### Optional environment variable
+
 - KAFKA_TOPIC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //Default is 'weatherData'
