@@ -19,10 +19,8 @@ WeatherDataImporter + Data Producer for Kafka Queue is part of our extensible ET
 
 ### Kafka Properties
 
-* kafka.metadata-broker-list &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //defaults to localhost:9092
-* kafka.serializer-class      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //defaults to kafka.serializer.StringEncoder
 * kafka.partitioner-class     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-* kafka.request-required-acks &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+* kafka.acks &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //defaults to 'all'
 * kafka.bootstrap-servers     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //defaults to localhost:9092
 * kafka.key-serializer         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //defaults to org.apache.kafka.common.serialization.StringSerializer
 * kafka.value-serializer      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //defaults to org.apache.kafka.common.serialization.StringSerializer
@@ -31,7 +29,22 @@ WeatherDataImporter + Data Producer for Kafka Queue is part of our extensible ET
 
 ### Resource Properties
 
-* resource.url  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Path to the resource url (url contains all the files for one specific day) - mandatory
+* resource.url  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Path to the resource url (url contains all the files for one specific day), defaults to the last day 
+
+--------------------------------
+## Running:
+Inside the root directory of the project run the commands:
+```
+$ cd application
+$ mvn spring-boot:run
+```
+
+## Building
+For building run the following command either inside the root directory of the project, or inside the 'application' directory:
+```
+$ mvn clean install
+```
+the generated jar file is inside application/target directory.
 
 --------------------------------
 
@@ -45,14 +58,12 @@ $ docker pull ahmadjawidjami/luftdaten_info_importer
 $  docker run \
 --env "RESOURCE_URL=http://archive.luftdaten.info/2016-12-10/" \
 --env "KAFKA_BOOTSTRAP_SERVERS=localhost:9092" \
---env "KAFKA_BROKER_LIST=localhost:9092" \
 --env "KAFKA_TOPIC=weatherData" \
 ahmadjawidjami/luftdaten_info_importer
 ```
-#### Mandatory enviroment variables:
-- RESOURCE_URL
+#### Mandatory enviroment variable:
 - KAFKA_BOOTSTRAP_SERVERS
-- KAFKA_BROKER_LIST
+
 
 #### Optional environment variable
 - KAFKA_TOPIC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //Default is 'weatherData'
