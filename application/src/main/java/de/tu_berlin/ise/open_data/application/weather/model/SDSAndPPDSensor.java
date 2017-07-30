@@ -4,6 +4,8 @@ import de.tu_berlin.ise.open_data.library.model.Schema;
 
 /**
  * Created by ahmadjawid on 6/20/17.
+ * All necessary fields for parsing data from source is defined here.
+ * Final fields are not used when parsing from file
  */
 public class SDSAndPPDSensor extends Schema {
 
@@ -22,12 +24,12 @@ public class SDSAndPPDSensor extends Schema {
     private String ratioP2;
 
     /**
-     * Declared as final to skip this field when parsing csv file
+     * Declared as final to skip the field when parsing csv file
      */
     private final String sourceId = "luftdaten_info";
 
     /**
-     * Declared as final to skip this field when parsing csv file
+     * Declared as final to skip the field when parsing csv file
      */
     private final String license = "find out";
 

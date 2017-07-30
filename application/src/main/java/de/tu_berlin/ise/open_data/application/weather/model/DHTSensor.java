@@ -4,6 +4,8 @@ import de.tu_berlin.ise.open_data.library.model.Schema;
 
 /**
  * Created by ahmadjawid on 6/20/17.
+ * All necessary fields for parsing data from source is defined here.
+ * Final fields are not used when parsing from file
  */
 public class DHTSensor extends Schema {
 
@@ -17,12 +19,12 @@ public class DHTSensor extends Schema {
     private String humidity;
 
     /**
-     * Declared as final to skip this field when parsing csv file
+     * Declared as final to skip the field when parsing csv file
      */
     private final String sourceId = "luftdaten_info";
 
     /**
-     * Declared as final to skip this field when parsing csv file
+     * Declared as final to skip the field when parsing csv file
      */
     private final String license = "find out";
 

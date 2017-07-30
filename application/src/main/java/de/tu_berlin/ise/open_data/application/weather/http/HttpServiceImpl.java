@@ -14,10 +14,19 @@ import java.util.List;
 
 /**
  * Created by ahmadjawid on 6/20/17.
+ * Implementation of {@link HttpService}
  */
 
 @Service
 public class HttpServiceImpl implements HttpService {
+
+
+    /**
+     * Service used to locate resources inside a specific date directory for luftdaten_info
+     * @param url
+     * @param sensorType
+     * @return UrlResource[]
+     * */
     @Override
     public UrlResource[] getUrlResources(String url, String sensorType) {
 
@@ -28,11 +37,17 @@ public class HttpServiceImpl implements HttpService {
         List<UrlResource> urlResourceList = new ArrayList<>();
 
         try {
+            //Connect to url, get a list document elements
             Document doc = Jsoup.connect(url).get();
+
+            //Search for links (each link is a path to a single file)
             Elements links = doc.getElementsByTag("a");
 
             String href;
             for (Element link : links) {
+
+                //In each job step we only need links to files which are of a specific sensor type
+                //which is defined as the properties of reader
                 if ((href = link.attr("href")).contains(sensorType) && href.endsWith(".csv")) {
 
                     urlResourceList.add(new UrlResource(new URL(url + href)));
@@ -43,6 +58,7 @@ public class HttpServiceImpl implements HttpService {
             ex.printStackTrace();
         }
 
+        //Convert list urls to array and return
         return urlResourceList.toArray(new UrlResource[]{});
 
     }

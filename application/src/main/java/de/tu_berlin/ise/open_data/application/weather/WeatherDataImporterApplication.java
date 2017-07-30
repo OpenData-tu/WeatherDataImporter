@@ -26,7 +26,7 @@ public class WeatherDataImporterApplication implements CommandLineRunner {
 
 
     /**
-     * Execute a simple query to make unexpectedly failed jobs restartable that is to start them exactly from where they failed.
+     * Executes a simple query to make unexpectedly failed jobs restartable that is to start them exactly from where they failed.
      * In order for the jobs to be restartable you should use a persistent database (default is in memory)
      */
     @Override

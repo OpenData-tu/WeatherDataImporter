@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * Created by ahmadjawid on 6/20/17.
+ * Processing includes converting Java Objects to json string objects according our defined schema
  */
 public class DHTSensorItemProcessor implements ItemProcessor<DHTSensor, String> {
 
@@ -23,8 +24,8 @@ public class DHTSensorItemProcessor implements ItemProcessor<DHTSensor, String> 
     @Override
     public String process(DHTSensor dhtSensorItem) throws Exception {
 
-        dhtSensorItem.setTimestamp(applicationService.toISODateFormat(dhtSensorItem.getTimestamp()));
-
+        dhtSensorItem.setTimestamp(applicationService.toISODateTimeFormat(dhtSensorItem.getTimestamp()));
+        //A valid json objects is created and returned
         return jsonSchemaCreator.create(dhtSensorItem);
 
     }

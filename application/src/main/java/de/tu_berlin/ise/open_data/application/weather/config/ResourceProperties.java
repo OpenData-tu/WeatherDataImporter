@@ -7,6 +7,8 @@ import java.time.LocalDate;
 
 /**
  * Created by ahmadjawid on 6/30/17.
+ *Properties of resource are provided here.
+ * These values are overridden by application.properties overridden by environment variables
  */
 
 @Configuration
@@ -24,6 +26,7 @@ public class ResourceProperties {
 
         if (url == null) {
 
+            setUrl(getPreviousDayUrl());
 
         }
 
@@ -34,9 +37,7 @@ public class ResourceProperties {
         this.url = url;
     }
 
-    public String getPreviousDayUrl() {
-
-
+    private String getPreviousDayUrl() {
 
         return "http://archive.luftdaten.info/" + LocalDate.now().minusDays(1).toString() + "/";
     }

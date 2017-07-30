@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * Created by ahmadjawid on 5/21/17.
+ * Processing includes converting Java Objects to json string objects according our defined schema
  */
 
 public class BMESensorItemProcessor implements ItemProcessor<BMESensor, String> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BMESensorItemProcessor.class);
 
     @Autowired
     private ApplicationService applicationService;
@@ -26,7 +26,8 @@ public class BMESensorItemProcessor implements ItemProcessor<BMESensor, String> 
 
     @Override
     public String process(BMESensor item) throws Exception {
-        item.setTimestamp(applicationService.toISODateFormat(item.getTimestamp()));
+        item.setTimestamp(applicationService.toISODateTimeFormat(item.getTimestamp()));
+        //A valid json objects is created and returned
         return jsonSchemaCreator.create(item);
     }
 
